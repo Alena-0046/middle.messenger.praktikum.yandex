@@ -1,0 +1,42 @@
+#------------------------
+# Add checks for sprint_1
+#------------------------
+#
+name: sprint1
+
+on:
+  push:
+    branches:
+      sprint_1
+      
+jobs:
+  job_from_yandex_practicum:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x]
+        
+    steps:
+    - name: Set up GitHub Actions
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Сheck if the repository is private
+      run: exit 1
+      if: ${{github.event.repository.private}}
+    - name: Get testing lib
+      run: set -eu && git clone https://github.com/Yandex-Practicum/tests-second-floor.git
+    - name: Check dist and node_modules in .gitignore
+      run: bash tests-second-floor/sprint_1/check_gitignore.sh
+    - name: Check npm run start existence
+      run: bash tests-second-floor/sprint_1/check_start.sh
+    - name: Check Parcel in start script
+      run: bash tests-second-floor/sprint_1/check_parcel.sh
+    - name: Check PORT 3000
+      run: bash tests-second-floor/sprint_1/check_port.sh
+    - name: Check routing
+      run: node tests-second-floor/sprint_1/check_routing.js
+      
