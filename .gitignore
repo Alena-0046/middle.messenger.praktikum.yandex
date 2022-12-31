@@ -1,4 +1,4 @@
-/.git
-/.parcel-cache
-/dist
-/node_modules
+/.git/
+/.parcel-cache/
+/dist/
+/node_modules/
