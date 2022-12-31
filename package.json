@@ -2,10 +2,10 @@
   "name": "middle.messenger.praktikum.yandex",
   "version": "1.0.0",
   "description": "Messenger",
-  "main": "index.js",
+  "source": "src/index.html",
   "scripts": {
-    "build": "",
-    "dev": "",
+    "build": "parcel build",
+    "dev": "parcel",
     "start": "npm run build && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
