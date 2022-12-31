@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/Alena-0046/middle.messenger.praktikum.yandex#readme",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "^1.0.2",
-    "express": "^4.18.2",
-    "parcel": "^2.8.2"
+    "@anikin/parcel-transformer-handlebars": "1.0.2",
+    "express": "4.18.2",
+    "parcel": "2.8.2"
   }
 }
