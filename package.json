@@ -2,7 +2,7 @@
   "name": "middle.messenger.praktikum.yandex",
   "version": "1.0.0",
   "description": "Messenger",
-  "source": "src/index.html",
+  "source": "src/index.hbs",
   "scripts": {
     "build": "parcel build",
     "dev": "parcel --port=3000",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Alena-0046/middle.messenger.praktikum.yandex#readme",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "1.0.2",
+    "@anikin/parcel-transformer-handlebars": "1.0.9",
     "express": "4.18.2",
     "parcel": "2.8.2"
   }
