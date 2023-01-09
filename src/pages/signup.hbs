@@ -1,0 +1,13 @@
+{{!< main}}
+<form class='signup-form' action='./profile.html'>
+  <h2>Регистрация</h2>
+  {{> inputgroup column='true' label='Почта' type='email'}}
+  {{> inputgroup column='true' label='Логин' type='text'}}
+  {{> inputgroup column='true' label='Имя' type='text'}}
+  {{> inputgroup column='true' label='Фамилия' type='text'}}
+  {{> inputgroup column='true' label='Телефон' type='tel'}}
+  {{> inputgroup column='true' label='Пароль' type='password'}}
+  {{> inputgroup column='true' label='Пароль (ещё раз)' type='password'}}
+  {{> button submit='true' text='Зарегистрироваться'}}
+  {{> link href='./login.hbs' text='Войти'}}
+</form>
