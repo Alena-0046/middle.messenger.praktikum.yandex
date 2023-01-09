@@ -2,7 +2,7 @@
   "name": "middle.messenger.praktikum.yandex",
   "version": "1.0.0",
   "description": "Messenger",
-  "source": "src/index.hbs",
+  "source": "src/pages/index.hbs",
   "scripts": {
     "build": "parcel build",
     "dev": "parcel --port=3000",
