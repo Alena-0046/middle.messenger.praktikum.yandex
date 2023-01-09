@@ -1,0 +1,8 @@
+{{!< main}}
+  <form class='login-form' action='./user.html'> 
+    <h2>Вход</h2>
+    {{> inputgroup column='true' type='login' label='Логин'}}
+    {{> inputgroup column='true' type='password' label='Пароль'}}
+    {{> button submit='true' text='Авторизоваться'}}
+    {{> link href='./signup.hbs' text='Нет аккаунта?'}}
+  </form>
