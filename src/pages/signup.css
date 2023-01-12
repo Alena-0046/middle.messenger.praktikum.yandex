@@ -1,8 +1,22 @@
-.signup-form {
-  border-radius: 20px;
+.signup-page__form {
+  width: 25vw;
+}
+
+.signup-page__header {
+  text-align: center;
+}
+
+.signup-page__input-groups {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 25%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.signup-page__label {
+  color: grey;
+}
+
+.signup-page__link {
+  text-align: center;
 }

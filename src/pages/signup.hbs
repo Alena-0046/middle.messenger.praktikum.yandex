@@ -1,13 +1,28 @@
+---
+fields:
+  - label: Почта
+    type: email
+  - label: Логин
+  - label: Имя
+  - label: Фамилия
+  - label: Телефон
+    type: tel
+  - label: Пароль
+    type: password
+  - label: Пароль (ещё раз)
+    type: password
+button: Зарегистрироваться
+link: Войти
+---
 {{!< main}}
-<form class='signup-form' action='./profile.html'>
-  <h2>Регистрация</h2>
-  {{> inputgroup column='true' label='Почта' type='email'}}
-  {{> inputgroup column='true' label='Логин' type='text'}}
-  {{> inputgroup column='true' label='Имя' type='text'}}
-  {{> inputgroup column='true' label='Фамилия' type='text'}}
-  {{> inputgroup column='true' label='Телефон' type='tel'}}
-  {{> inputgroup column='true' label='Пароль' type='password'}}
-  {{> inputgroup column='true' label='Пароль (ещё раз)' type='password'}}
-  {{> button submit='true' text='Зарегистрироваться'}}
-  {{> link href='./login.hbs' text='Войти'}}
+<form class='signup-page__form' action='./profile.html'>
+  <h2 class='signup-page__header'>Регистрация</h2>
+  <div class='signup-page__input-groups'>
+    {{#each fields}}
+      <label class='signup-page__label'>{{this.label}}</label>
+      <input class='signup-page__input'>
+    {{/each}}
+  </div>
+  <button type='submit'>{{button}}</button>
+  <a class='signup-page__link' href='./login.hbs'>{{link}}</a>
 </form>
