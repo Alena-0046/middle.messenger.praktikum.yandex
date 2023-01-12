@@ -1,0 +1,62 @@
+@import '../../src/pages/index.css';
+@import '../../src/pages/profile.css';
+
+:root {
+  --font-family: Arial, Helvetica, sans-serif;
+  --font-size: 20px;
+
+  --main-color: #3369f3;
+  --secondary-color: #e4edfd;
+  --background-color: #efefef;
+
+  --margin: 20px;
+  --padding: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+html, body {
+  height: 100%;
+}
+
+html > * {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+}
+
+button {
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 1em;
+}
+
+input {
+  border: hidden;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 0.5em;
+}
+
+label {
+  font-family: inherit;
+  font-size: 1em;
+  padding: 0.5em;
+}
+
+.circle {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
