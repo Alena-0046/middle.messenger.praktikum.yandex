@@ -36,20 +36,20 @@ button {
   color: white;
   font-family: inherit;
   font-size: 1em;
-  padding: 1em;
+  padding: 0.5em;
 }
 
 input {
   border: hidden;
   font-family: inherit;
   font-size: 1em;
-  padding: 0.5em;
+  padding: 0.25em;
 }
 
 label {
   font-family: inherit;
   font-size: 1em;
-  padding: 0.5em;
+  padding: 0.25em;
 }
 
 .circle {
