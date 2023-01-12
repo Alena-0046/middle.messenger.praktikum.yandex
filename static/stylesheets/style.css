@@ -1,5 +1,6 @@
 @import '../../src/pages/index.css';
 @import '../../src/pages/profile.css';
+@import '../../src/pages/signup.css';
 
 :root {
   --font-family: Arial, Helvetica, sans-serif;
@@ -29,6 +30,12 @@ html > * {
   font-size: var(--font-size);
 }
 
+a {
+  font-family: inherit;
+  font-size: 1em;
+  padding: 0.5em;
+}
+
 button {
   background-color: var(--main-color);
   border: none;
@@ -39,17 +46,27 @@ button {
   padding: 0.5em;
 }
 
+form {
+  border: 2px solid var(--background-color);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  width: fit-content;
+}
+
 input {
   border: hidden;
+  border-bottom: 2px solid var(--main-color);
   font-family: inherit;
   font-size: 1em;
-  padding: 0.25em;
+  padding: 0.5em;
 }
 
 label {
   font-family: inherit;
   font-size: 1em;
-  padding: 0.25em;
+  padding: 0.5em;
 }
 
 .circle {
