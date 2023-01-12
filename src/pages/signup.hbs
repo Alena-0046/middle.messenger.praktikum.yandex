@@ -1,4 +1,5 @@
 ---
+header: Регистрация
 fields:
   - label: Почта
     type: email
@@ -16,11 +17,11 @@ link: Войти
 ---
 {{!< main}}
 <form class='signup-page__form' action='./profile.html'>
-  <h2 class='signup-page__header'>Регистрация</h2>
+  <h2 class='signup-page__header'>{{header}}</h2>
   <div class='signup-page__input-groups'>
     {{#each fields}}
       <label class='signup-page__label'>{{this.label}}</label>
-      <input class='signup-page__input'>
+      <input class='signup-page__input' {{#if this.type}}type='{{this.type}}'{{/if}}>
     {{/each}}
   </div>
   <button type='submit'>{{button}}</button>
