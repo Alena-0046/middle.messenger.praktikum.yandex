@@ -1,8 +1,21 @@
+---
+header: Вход
+fields:
+  - label: Логин
+  - label: Пароль
+    type: password
+button: Авторизоваться
+link: Нет аккаунта?
+---
 {{!< main}}
-  <form class='login-form' action='./user.html'> 
-    <h2>Вход</h2>
-    {{> inputgroup column='true' type='login' label='Логин'}}
-    {{> inputgroup column='true' type='password' label='Пароль'}}
-    {{> button submit='true' text='Авторизоваться'}}
-    {{> link href='./signup.hbs' text='Нет аккаунта?'}}
-  </form>
+<form class='login-page__form' action='./profile.html'>
+  <h2 class='login-page__header'>{{header}}</h2>
+  <div class='login-page__input-groups'>
+    {{#each fields}}
+      <label class='login-page__label'>{{this.label}}</label>
+      <input class='login-page__input' {{#if type}}type='{{type}}'{{/if}}>
+    {{/each}}
+  </div>
+  <button type='submit'>{{button}}</button>
+  <a class='login-page__link' href='./signup.hbs'>{{link}}</a>
+</form>
