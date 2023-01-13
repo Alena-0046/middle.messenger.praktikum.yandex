@@ -1,3 +1,11 @@
 .left-panel {
+  display: flex;
+  flex-direction: column;
   width: 25%;
+}
+
+.left-panel__link {
+  align-self: flex-end;
+  color: black;
+  margin: 1em;
 }
