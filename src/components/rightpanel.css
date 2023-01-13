@@ -49,10 +49,6 @@
 .bottom-panel__input {
   background-color: var(--background-color);
   border: none;
+  border-radius: 8px;
   flex-grow: 1;
-}
-
-.bottom-panel__send-button {
-  aspect-ratio: 1/1;
-  border-radius: 50%;
 }
