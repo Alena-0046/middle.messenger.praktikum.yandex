@@ -1,7 +1,11 @@
+@import '../../src/components/leftpanel.css';
+@import '../../src/components/rightpanel.css';
+
 @import '../../src/pages/index.css';
 @import '../../src/pages/login.css';
 @import '../../src/pages/profile.css';
 @import '../../src/pages/signup.css';
+@import '../../src/pages/user.css';
 
 :root {
   --font-family: Arial, Helvetica, sans-serif;
@@ -59,6 +63,7 @@ form {
 input {
   border: hidden;
   border-bottom: 2px solid var(--main-color);
+  border-radius: 8px;
   font-family: inherit;
   font-size: 1em;
   padding: 0.5em;
@@ -76,5 +81,4 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
 }
