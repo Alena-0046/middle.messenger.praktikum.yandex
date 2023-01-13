@@ -1,0 +1,43 @@
+.contact {
+  display: grid;
+  grid-template-areas:
+    'photo name time'
+    'photo text count';
+  grid-column-gap: 1em;
+  padding: 1em;
+}
+
+.contact:hover {
+  background-color: var(--secondary-color);
+}
+
+.contact__photo {
+  background-color: var(--background-color);
+  grid-area: photo;
+  width: 4em;
+}
+
+.contact__name {
+  grid-area: name;
+  align-self: start;
+}
+
+.contact__message-time {
+  align-self: end;
+  grid-area: time;
+  align-self: start;
+}
+
+.contact__message-text {
+  align-self: start;
+  grid-area: text;
+}
+
+.contact__message-count {
+  align-self: end;
+  background-color: var(--main-color);
+  color: white;
+  grid-area: count;
+  justify-self: end;
+  width: 2em;
+}
