@@ -2,7 +2,6 @@
 @import '../../src/components/leftpanel.css';
 @import '../../src/components/rightpanel.css';
 
-@import '../../src/pages/index.css';
 @import '../../src/pages/login.css';
 @import '../../src/pages/profile.css';
 @import '../../src/pages/signup.css';
@@ -79,6 +78,18 @@ label {
   font-family: inherit;
   font-size: 1em;
   padding: 0.5em;
+}
+
+nav {
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  margin: 3em;
 }
 
 .circle {
