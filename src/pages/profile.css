@@ -41,6 +41,7 @@
 }
 
 .profile__input {
+  border: none;
   pointer-events: none;
   text-align: right;
 }

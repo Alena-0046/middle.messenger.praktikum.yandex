@@ -1,15 +1,16 @@
-{{!< main}}
-<div class='user-page__right-panel'>
-  <div class='right-panel__new-message'>
-    <img class='new-message__paper-clip' src='../../static/images/attachment-2.svg' alt='paper clip'>
-    <input class='new-message__input' type='text'>
-    <p class='new-message__button'>&#8594;</p>
+<div class='right-panel'>
+  <div class='right-panel__top-panel'>
+    <div class='top-panel__avatar-container circle'>
+    </div>
+    <h3 class='top-panel__name'>{{name}}</h3>
+    <button class='top-panel__button'><i class='fa-solid fa-ellipsis-vertical'></i></button>
   </div>
   <div class='right-panel__messages'>
-    <p>Messages</p>
+    
   </div>
-  <div class='right-panel__contact-name'>
-    <p>Name</p>
-    <p>Button</p>
+  <div class='right-panel__bottom-panel'>
+    <button class='bottom-panel__actions-button'><i class='fa-solid fa-paperclip'></i></button>
+    <input class='bottom-panel__input'>
+    <button class='bottom-panel__send-button'><i class='fa-solid fa-arrow-right'></i></button> 
   </div>
 </div>

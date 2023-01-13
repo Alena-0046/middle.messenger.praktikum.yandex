@@ -1,8 +1,4 @@
-.right-panel__messages {
-  background: lightgreen;
-}
-
-.div-1 {
-  background-color: lightpink;
-  justify-content: center;
+.user-page {
+  display: flex;
+  height: 100%;
 }
