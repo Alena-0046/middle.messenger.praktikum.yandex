@@ -1,0 +1,8 @@
+<div class='error'>
+  <h2>{{#if error_code}}{{error_code}}{{else}}404{{/if}}</h2>
+  <br>
+  <h3>{{#if error_message}}{{error_message}}{{else}}Не туда попали{{/if}}</h3>
+  <br>
+  <br>
+  {{> link href='./user.hbs' text='Назад к чатам'}}
+</div>
