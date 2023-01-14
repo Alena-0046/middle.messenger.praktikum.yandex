@@ -5,7 +5,7 @@
 
 .profile-page__button-panel {
   align-items: center;
-  background-color: var(--background-color);
+  background-color: $background-color;
   display: flex;
   padding: 1em;
 }
@@ -25,7 +25,7 @@
 }
 
 .avatar-container__avatar {
-  background-color: var(--background-color);
+  background-color: $background-color;
 }
 
 .profile__inputs {
@@ -35,7 +35,7 @@
 }
 
 .profile__input-group {
-  border-bottom: 2px solid var(--background-color);
+  border-bottom: 2px solid $background-color;
   display: flex;
   justify-content: space-between;
 }
@@ -60,7 +60,7 @@
 .buttons__change-data-button,
 .buttons__change-password-button {
   background-color: inherit;
-  color: var(--main-color);
+  color: $main-color;
 }
 
 .buttons__exit-button {
