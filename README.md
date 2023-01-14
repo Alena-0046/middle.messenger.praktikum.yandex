@@ -8,4 +8,4 @@
   npm run build
 
 Для запуска:
-  npm start
+  npm run start

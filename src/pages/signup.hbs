@@ -2,13 +2,19 @@
 header: Регистрация
 fields:
   - label: Почта
+    name: email
     type: email
   - label: Логин
+    name: login
   - label: Имя
+    name: first_name
   - label: Фамилия
+    name: second_name
   - label: Телефон
+    name: phone
     type: tel
   - label: Пароль
+    name: password
     type: password
   - label: Пароль (ещё раз)
     type: password
@@ -21,7 +27,7 @@ link: Войти
   <div class='signup-page__input-groups'>
     {{#each fields}}
       <label class='signup-page__label'>{{this.label}}</label>
-      <input class='signup-page__input' {{#if this.type}}type='{{this.type}}'{{/if}}>
+      <input class='signup-page__input' name='{{name}}' {{#if this.type}}type='{{this.type}}'{{/if}}>
     {{/each}}
   </div>
   <button type='submit'>{{button}}</button>
