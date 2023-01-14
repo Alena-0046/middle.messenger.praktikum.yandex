@@ -1,3 +1,4 @@
+@import './variables.css';
 @import '../../src/components/contact.css';
 @import '../../src/components/leftpanel.css';
 @import '../../src/components/rightpanel.css';
@@ -6,17 +7,6 @@
 @import '../../src/pages/profile.css';
 @import '../../src/pages/signup.css';
 @import '../../src/pages/user.css';
-
-$font-family: Arial, Helvetica, sans-serif;
-$font-size: 1rem;
-
-$main-color: #3369f3;
-$secondary-color: #e4edfd;
-$background-color: #efefef;
-
-$margin: 20px;
-$padding: 20px;
-
 
 * {
   box-sizing: border-box;

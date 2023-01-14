@@ -6,14 +6,14 @@
 
 .right-panel__top-panel {
   align-items: center;
-  border-bottom: 3px solid var(--background-color);
+  border-bottom: 3px solid $background-color;
   column-gap: 1em;
   display: flex;
   padding: 0.5em;
 }
 
 .top-panel__avatar-container {
-  background-color: var(--background-color);
+  background-color: $background-color;
   width: 5em;
 }
 
@@ -35,7 +35,7 @@
 
 .right-panel__bottom-panel {
   align-items: flex-end;
-  border-top: 3px solid var(--background-color);
+  border-top: 3px solid $background-color;
   column-gap: 1em;
   display: flex;
   padding: 0.5em;
@@ -47,7 +47,7 @@
 }
 
 .bottom-panel__input {
-  background-color: var(--background-color);
+  background-color: $background-color;
   border: none;
   border-radius: 8px;
   flex-grow: 1;

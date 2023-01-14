@@ -8,11 +8,11 @@
 }
 
 .contact:hover {
-  background-color: var(--secondary-color);
+  background-color: $background-color;
 }
 
 .contact__photo {
-  background-color: var(--background-color);
+  background-color: $background-color;
   grid-area: photo;
   width: 4em;
 }
@@ -35,7 +35,7 @@
 
 .contact__message-count {
   align-self: end;
-  background-color: var(--main-color);
+  background-color: $main-color;
   color: white;
   grid-area: count;
   justify-self: end;
