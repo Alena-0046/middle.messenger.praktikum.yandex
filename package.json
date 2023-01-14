@@ -4,8 +4,8 @@
   "description": "Messenger",
   "source": "src/pages/index.hbs",
   "scripts": {
-    "build": "parcel build --open",
-    "dev": "parcel --port=3000",
+    "build": "parcel build",
+    "dev": "parcel --port=3000 --open",
     "start": "npm run build && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
