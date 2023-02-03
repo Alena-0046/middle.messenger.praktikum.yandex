@@ -18,13 +18,13 @@
 }
 
 .contact__name {
-  grid-area: name;
   align-self: start;
+  grid-area: name;
 }
 
 .contact__message-time {
-  grid-area: time;
   align-self: start;
+  grid-area: time;
 }
 
 .contact__message-text {
