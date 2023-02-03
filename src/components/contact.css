@@ -1,8 +1,8 @@
 .contact {
   display: grid;
   grid-template-areas:
-    'photo name time'
-    'photo text count';
+    "photo name time"
+    "photo text count";
   grid-column-gap: 1em;
   padding: 1em;
 }
@@ -23,7 +23,6 @@
 }
 
 .contact__message-time {
-  align-self: end;
   grid-area: time;
   align-self: start;
 }

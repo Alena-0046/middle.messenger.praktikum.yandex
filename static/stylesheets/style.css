@@ -1,12 +1,11 @@
-@import './variables.css';
-@import '../../src/components/contact.css';
-@import '../../src/components/leftpanel.css';
-@import '../../src/components/rightpanel.css';
-
-@import '../../src/pages/login.css';
-@import '../../src/pages/profile.css';
-@import '../../src/pages/signup.css';
-@import '../../src/pages/user.css';
+@import url("./variables.css");
+@import url("../../src/components/contact.css");
+@import url("../../src/components/leftpanel.css");
+@import url("../../src/components/rightpanel.css");
+@import url("../../src/pages/login.css");
+@import url("../../src/pages/profile.css");
+@import url("../../src/pages/signup.css");
+@import url("../../src/pages/user.css");
 
 * {
   box-sizing: border-box;
@@ -15,7 +14,8 @@
   text-decoration: none;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -57,7 +57,7 @@ input {
   padding: 0.5em;
 }
 
-input[type='search'] {
+input[type="search"] {
   border: hidden;
   background-color: $background-color;
   margin: 1em;
