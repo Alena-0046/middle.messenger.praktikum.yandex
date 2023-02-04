@@ -11,8 +11,13 @@
     "overrides": [
     ],
     "parserOptions": {
-        "ecmaVersion": "latest"
+        "ecmaVersion": "latest",
+        "project": ["tsconfig.json"]
     },
     "rules": {
-    }
+        "max-len": [1, 150],
+        "require-jsdoc": 0,
+        "space-before-function-paren": ["error", "always"],
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"]
+   }
 }

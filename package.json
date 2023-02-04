@@ -5,6 +5,7 @@
   "source": "src/pages/index.hbs",
   "scripts": {
     "build": "parcel build",
+    "eslint": "eslint . --ext .ts --fix",
     "dev": "parcel --port=3000 --open",
     "start": "npm run build && node server.js",
     "stylelint": "stylelint \"**/*.css\" --fix",
