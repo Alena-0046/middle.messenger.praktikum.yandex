@@ -8,10 +8,10 @@ enum METHOD {
 type Options = {
   method: string
   headers?: Record<string, string>
-  data?: object
+  data?: any
 }
 
-function queryStringify (data: object): string {
+function queryStringify (data: any): string {
   if (typeof data !== 'object') {
     throw new Error('Data must be object')
   }
