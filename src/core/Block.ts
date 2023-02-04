@@ -1,18 +1,27 @@
 import EventBus from './EventBus'
 
+enum EVENTS {
+  INIT = 'init',
+  FLOW_CDM = 'flow:component-did-mount',
+  FLOW_CDU = 'flow:component-did-update',
+  FLOW_RENDER = 'flow:render'
+}
+
 export class Block {
-  private readonly eventBus: EventBus
-  private readonly _meta: object
-  private readonly element: HTMLElement
-  private _element: HTMLElement
-  private readonly props: object
+  _props: object
+  _children: object
+  _id
+  _element: HTMLElement
+  _meta: object
+  eventBus: EventBus
+  _setUpdate: boolean
 
   constructor (name: string = 'div', props: object = {}) {
     this.eventBus = new EventBus()
     this._meta = { name, props }
     this.props = this._makePropsProxy(props)
     this._registerEvents(eventBus)
-    eventBus.emit(Block.EVENTS.INIT)
+    eventBus.emit(EVENTS.INIT)
   }
 
   show (): void {
@@ -24,10 +33,10 @@ export class Block {
   }
 
   _registerEvents (): void {
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
-    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
-    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
+    eventBus.on(EVENTS.INIT, this.init.bind(this))
+    eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
+    eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
+    eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
   _createResources (): void {
@@ -36,7 +45,7 @@ export class Block {
 
   init (): void {
     this._createResources()
-    this.eventBus.emit(Block.EVENTS.FLOW_RENDER)
+    this.eventBus.emit(EVENTS.FLOW_RENDER)
   }
 
   _componentDidMount (): void {
@@ -47,7 +56,7 @@ export class Block {
   }
 
   dispatchComponentDidMount (): void {
-    this.eventBus.emit(Block.Events.FLOW_CMD)
+    this.eventBus.emit(Events.FLOW_CMD)
   }
 
   _componentDidUpdate (oldProps: object, newProps: object): void {
