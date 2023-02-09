@@ -14,12 +14,7 @@ export default class LoginPage extends Block {
         name: 'password',
         type: 'password',
       }],
-      link: 'Нет аккаунта?', /* ,
-      events: {
-        click: (e: string): void => {
-          console.log('LoginForm click')
-        },
-      },*/
+      link: 'Нет аккаунта?',
     }
     const btnProps: Record<string, string> = {
       text: 'Авторизоваться',
@@ -38,11 +33,12 @@ export default class LoginPage extends Block {
     const events: Record<string, unknown> = {
       submit: (e) => {
         e.preventDefault()
-        console.log('Login submit')
+        this.getElement().querySelectorAll('input').forEach((input) => {
+          console.log(String(input.name) + '(' + String(input.type) + '): ' + String(input.value))
+        })
       },
     }
     Object.keys(events).forEach((e) => {
-      console.log('Login addEvents - event - ' + typeof (events))
       this.element.addEventListener(e, events[e])
     })
     super.addEvents()
