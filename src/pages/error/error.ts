@@ -3,7 +3,7 @@ import template from './error.hbs'
 
 export default class ErrorPage extends Block {
   constructor () {
-    super('main', 'error', {}, {})
+    super('main', 'error-page', {}, {})
   }
 
   compile (): HTMLElement {
