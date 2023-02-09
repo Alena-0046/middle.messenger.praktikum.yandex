@@ -12,16 +12,15 @@ export default abstract class Block {
   protected element: HTMLElement
   protected class: string
   // protected meta: Object
-  protected props: Record<string, string>// {[key: string]: string}
-  protected children: Record<string, Block> // {[key: string]: Block}
+  protected props: Record<string, string>
+  protected children: Record<string, Block>
   protected events: Record<string, unknown>
   protected setUpdate: boolean
   protected eventBus: EventBus
 
   constructor (tagName: string, className: string, props: Record <string, string>, children: Record<string, Block>, events: Record<string, unknown> = {}) {
-    // console.log('Block - constructor() - start')
     this.element = document.createElement(tagName)
-    this.class = className
+    this.element.classList.add(className)
 
     this.props = props
     this.children = children
@@ -68,18 +67,19 @@ export default abstract class Block {
   abstract compile (): HTMLElement
 
   render (): void {
-    // console.log('Block - render()')
-    // this.removeEvents()
+    this.removeEvents()
     this.element.innerHTML = ''
     this.element.innerHTML = this.compile()
     this.addEvents()
-    // this.addAttributes()
   }
 
   addEvents (): void {
     Object.keys(this.events).forEach((e) => {
       this.element.addEventListener(e, this.events[e])
     })
+  }
+
+  removeEvents() : void {
   }
 
   show (): void {
@@ -89,7 +89,7 @@ export default abstract class Block {
   hide (): void {
     this.getElement().style.display = 'none'
   }
-/*
+
   componentDidMount (): void {
   }
 
@@ -114,22 +114,22 @@ export default abstract class Block {
     }
   }
 
-  _render (): void {
-    // this._element.innerHTML = this.render()
+  private makePropsProxy (props: unknown): unknown {
+    // const self = this
+    console.log('Block - makePropsProxy - start')
+    return new Proxy(props, {
+      get (target: unknown, prop: unknown): unknown {
+        const value: unknown = target[prop]
+        return typeof value === 'function' ? value.bind(target) : value
+      },
+      set (target: unknown, prop: unknown, value: unknown): boolean {
+        target[prop] = value
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, self._prevProps, target)
+        return true
+      },
+      deleteProperty () {
+        throw new Error('Нет доступа')
+      },
+    })
   }
-
-  render (): void {
-  }
-
-  getContent (): HTMLElement {
-    return this.element
-  }
-
-  makePropsProxy (): boolean {
-    return true
-  }
-
-  _createDocumentElement (name: string): HTMLElement {
-    return document.createElement(name)
-  }*/
 }

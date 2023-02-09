@@ -15,7 +15,7 @@
         "project": ["tsconfig.json"]
     },
     "rules": {
-        "max-len": [1, 150],
+        "max-len": [1, 200],
         "require-jsdoc": 0,
         "space-before-function-paren": ["error", "always"],
         "@typescript-eslint/comma-dangle": [2, "always-multiline"],

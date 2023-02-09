@@ -14,8 +14,7 @@ const Pages = [
 
 export default class HomePage extends Block {
   constructor () {
-    const props = { pages: Pages }
-    super('nav', 'navigation', props, {})
+    super('nav', 'navigation', { pages: Pages }, {})
   }
 
   compile (): HTMLElement {
