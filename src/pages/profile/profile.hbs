@@ -1,37 +1,7 @@
----
-save_button: Сохранить
-change_data_button: Изменить данные
-change_password_button: Изменить пароль
-exit_button: Выйти
-fields:
-  - label: Почта
-    name: email
-    type: email
-    val: pochta@yandex.ru
-  - label: Логин
-    name: login
-    val: ivanivanov
-  - label: Имя
-    name: first_name
-    val: Иван
-  - label: Фамилия
-    name: second_name
-    val: Иванов
-  - label: Имя в чате
-    name: display_name
-    val: Иван
-  - label: Телефон
-    name: phone
-    type: tel
-    val: +7 (912) 345 67 89
-name: Иван
----
-{{!< main}}
-<div class='profile-page'>
-  <div class='profile-page__button-panel'>
+<div class='profile-page__button-panel'>
     <button class='button-panel__button circle'><i class='fa-solid fa-arrow-left'></i></button>
   </div>
-  <div class='profile-page__profile'>  
+  <div class='profile-page__profile'>
     <div class='profile__avatar-container'>
       <div class='avatar-container__avatar circle'>
       </div>
@@ -40,7 +10,7 @@ name: Иван
     <div class='profile__inputs'>
       {{#each fields}}
         <div class='profile__input-group'>
-          <label>{{this.label}}</label>
+          <label>{{label}}</label>
           <input class='profile__input' name='{{name}}' type='{{type}}' value='{{this.val}}'>
         </div>
       {{/each}}
@@ -52,4 +22,3 @@ name: Иван
       <button class='buttons__exit-button'>{{exit_button}}</button>
     </div>
   </div>
-</div>

@@ -1,11 +1,11 @@
 @import url("./variables.css");
-@import url("../../src/components/contact.css");
-@import url("../../src/components/leftpanel.css");
-@import url("../../src/components/rightpanel.css");
-@import url("../../src/pages/login.css");
-@import url("../../src/pages/profile.css");
-@import url("../../src/pages/signup.css");
-@import url("../../src/pages/user.css");
+@import url("../../src/components/contact/contact.css");
+@import url("../../src/components/leftpanel/leftpanel.css");
+@import url("../../src/components/rightpanel/rightpanel.css");
+@import url("../../src/pages/login/login.css");
+@import url("../../src/pages/profile/profile.css");
+@import url("../../src/pages/signup/signup.css");
+@import url("../../src/pages/user/user.css");
 
 * {
   box-sizing: border-box;

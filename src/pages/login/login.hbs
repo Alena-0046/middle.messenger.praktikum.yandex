@@ -1,20 +1,8 @@
----
-header: Вход
-fields:
-  - label: Логин
-    name: login
-  - label: Пароль
-    name: password
-    type: password
-button: Авторизоваться
-link: Нет аккаунта?
----
-{{!< main}}
 <form class='login-page__form' action='./profile.html'>
   <h2 class='login-page__header'>{{header}}</h2>
   <div class='login-page__input-groups'>
     {{#each fields}}
-      <label class='login-page__label'>{{this.label}}</label>
+      <label class='login-page__label'>{{label}}</label>
       <input class='login-page__input' name='{{name}}' {{#if type}}type='{{type}}'{{/if}}>
     {{/each}}
   </div>
