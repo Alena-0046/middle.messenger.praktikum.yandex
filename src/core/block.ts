@@ -10,26 +10,26 @@ enum EVENTS {
 export default abstract class Block {
   protected id: string
   protected element: HTMLElement
-  protected tag: string
   protected class: string
   // protected meta: Object
   protected props: Record<string, string>// {[key: string]: string}
   protected children: Record<string, Block> // {[key: string]: Block}
+  protected events: Record<string, unknown>
   protected setUpdate: boolean
   protected eventBus: EventBus
 
-  constructor (tagName: string, className: string, props: Record <string, string>, children: Record<string, Block>) {
-    // this.element = document.createElement(tagName)
+  constructor (tagName: string, className: string, props: Record <string, string>, children: Record<string, Block>, events: Record<string, unknown> = {}) {
+    // console.log('Block - constructor() - start')
+    this.element = document.createElement(tagName)
     this.class = className
 
-    this.tag = tagName
     this.props = props
     this.children = children
+    this.events = events
 
     this.eventBus = new EventBus()
     this.registerEvents()
     this.eventBus.emit(EVENTS.INIT)
-    // console.log('Block - constructor() - end')
   }
 
   getElement (): HTMLElement {
@@ -60,10 +60,8 @@ export default abstract class Block {
 
   init (): void {
     // console.log(`Block - init - started, tag = ${this.tag}`)
-    this.element = document.createElement(this.tag)
+    // this.element = document.createElement(this.tag)
     this.element.id = 'abcd'
-    this.element.style.class = this.class
-    this.element.classList.add(this.class)
     this.eventBus.emit(EVENTS.FLOW_RENDER)
   }
 
@@ -79,12 +77,9 @@ export default abstract class Block {
   }
 
   addEvents (): void {
-    /* const { events = {} } = this.props
-    if (!events)
-      return
-    Object.keys(events).forEach((eventName) => {
-      this.element.addEventListener(eventName, events[eventName]);
-    })*/
+    Object.keys(this.events).forEach((e) => {
+      this.element.addEventListener(e, this.events[e])
+    })
   }
 
   show (): void {

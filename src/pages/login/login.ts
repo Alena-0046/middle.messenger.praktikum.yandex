@@ -1,5 +1,5 @@
 import Block from '../../core/block.ts'
-// import Navigation from '../../components/navigation/navigation.ts'
+import Button from '../../components/button/button.ts'
 import template from './login.hbs'
 
 export default class LoginPage extends Block {
@@ -14,13 +14,37 @@ export default class LoginPage extends Block {
         name: 'password',
         type: 'password',
       }],
-      button: 'Авторизоваться',
-      link: 'Нет аккаунта?',
+      link: 'Нет аккаунта?', /* ,
+      events: {
+        click: (e: string): void => {
+          console.log('LoginForm click')
+        },
+      },*/
     }
-    super('main', 'login-page', props, {})
+    const btnProps: Record<string, string> = {
+      text: 'Авторизоваться',
+      type: 'submit',
+    }
+    const btn = new Button(btnProps, {})
+
+    super('main', 'login-page', props, { button: btn })
   }
 
   compile (): HTMLElement {
     return template(this.getPropsAndChildren())
+  }
+
+  addEvents (): void {
+    const events: Record<string, unknown> = {
+      submit: (e) => {
+        e.preventDefault()
+        console.log('Login submit')
+      },
+    }
+    Object.keys(events).forEach((e) => {
+      console.log('Login addEvents - event - ' + typeof (events))
+      this.element.addEventListener(e, events[e])
+    })
+    super.addEvents()
   }
 }
