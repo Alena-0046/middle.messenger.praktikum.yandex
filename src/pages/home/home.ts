@@ -8,7 +8,6 @@ export default class HomePage extends Block {
   }
 
   compile (): HTMLElement {
-    console.log('HomePage - compile')
     return template(this.getPropsAndChildren())
   }
 }
