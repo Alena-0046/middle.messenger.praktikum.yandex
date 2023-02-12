@@ -87,6 +87,10 @@ nav li {
   margin: 3em;
 }
 
+span {
+  color: red;
+}
+
 .circle {
   aspect-ratio: 1/1;
   border-radius: 50%;
