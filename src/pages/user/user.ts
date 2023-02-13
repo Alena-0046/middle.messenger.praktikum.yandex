@@ -8,9 +8,9 @@ export default class UserPage extends Block {
     console.log('User ctor')
 
     super('main', {
-      attr: { class: 'user-page'},
+      attr: { class: 'user-page' },
       leftpanel: new LeftPanel(),
-      rightpanel: new RightPanel()
+      rightpanel: new RightPanel(),
     })
   }
 

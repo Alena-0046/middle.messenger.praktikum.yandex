@@ -3,7 +3,7 @@ import template from './leftpanel.hbs'
 
 export default class LeftPanel extends Block {
   constructor () {
-    super('div', { attr: { class: 'left-panel'}})
+    super('div', { attr: { class: 'left-panel' } })
   }
 
   render (): string {

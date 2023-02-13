@@ -3,7 +3,7 @@ import template from './rightpanel.hbs'
 
 export default class RightPanel extends Block {
   constructor () {
-    super('div', { attr: { class: 'right-panel'}})
+    super('div', { attr: { class: 'right-panel' } })
   }
 
   render (): string {
