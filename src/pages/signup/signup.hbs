@@ -1,11 +1,1 @@
-<form class='signup-page__form' action='/#profile'>
-  <h2 class='signup-page__header'>{{header}}</h2>
-  <div class='signup-page__input-groups'>
-    {{#each fields}}
-      <label class='signup-page__label'>{{this.label}}</label>
-      <input class='signup-page__input' name='{{name}}' {{#if this.type}}type='{{this.type}}'{{/if}}>
-    {{/each}}
-  </div>
-  <button type='submit'>{{button}}</button>
-  <a class='signup-page__link' href='#login'>{{link}}</a>
-</form>
+{{{form}}}

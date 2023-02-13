@@ -10,6 +10,7 @@
 .login-page__input-groups {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1vw;
 }
 
 .login-page__label {

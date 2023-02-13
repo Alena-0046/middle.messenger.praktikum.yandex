@@ -1,46 +1,70 @@
-import Block from '../../core/block.ts'
+import Block from '../../core/block'
+import Button from '../../components/button/button'
+import InputGroup from '../../components/inputgroup/inputgroup'
 import template from './profile.hbs'
 
 export default class ProfilePage extends Block {
   constructor () {
     const props = {
-      save_button: 'Сохранить',
-      change_data_button: 'Изменить данные',
-      change_password_button: 'Изменить пароль',
-      exit_button: 'Выйти',
-      fields: [{
-        label: 'Почта',
-        name: 'email',
-        type: 'email',
-        val: 'pochta@yandex.ru',
-      }, {
-        label: 'Логин',
-        name: 'login',
-        val: 'ivanivanov',
-      }, {
-        label: 'Имя',
-        name: 'first_name',
-        val: 'Иван',
-      }, {
-        label: 'Фамилия',
-        name: 'second_name',
-        val: 'Иванов',
-      }, {
-        label: 'Имя в чате',
-        name: 'display_name',
-        val: 'Иван',
-      }, {
-        label: 'Телефон',
-        name: 'phone',
-        type: 'tel',
-        val: '+7 (912) 345 67 89',
-      }],
-      name: 'Иван',
+      attr: { class: 'profile-page' },
+      inputgroups: [
+        new InputGroup('profile__input-group', 'email'),
+        new InputGroup('profile__input-group', 'login'),
+        new InputGroup('profile__input-group', 'first_name'),
+        new InputGroup('profile__input-group', 'nick'),
+        new InputGroup('profile__input-group', 'second_name'),
+        new InputGroup('profile__input-group', 'phone'),
+        new InputGroup('profile__input-group', 'password'),
+        new InputGroup('profile__input-group', 'password_repeat'),
+      ],
+      buttons: [
+        /* new Button({
+          attr: { class: 'save_button' },
+          text: 'Сохранить',
+        }),*/
+        new Button({
+          attr: { class: 'buttons__change-data-button' },
+          text: 'Изменить данные',
+        }), /*
+        new Button({
+          attr: { class: 'buttons__change-password' },
+          text: 'Изменить пароль',
+        }),
+        new Button({
+          attr: { class: 'buttons__exit-button' },
+          text: 'Выйти',
+        }),*/
+      ],
     }
-    super('main', 'profile-page', props, {})
+
+    props.events = {
+      click: {
+        handler: (e) => {
+          if (e.target != null && e.target instanceof HTMLButtonElement) {
+            InputGroup.validate()
+          }
+          console.log('Profile - click event')
+        },
+        capture: false,
+      },
+      focus: {
+        handler: (e) => {
+          console.log('Profile - focus event')
+        },
+        capture: true,
+      },
+      blur: {
+        handler: (e) => {
+          console.log('Profile - blur event')
+        },
+        capture: true,
+      },
+    }
+
+    super('main', props)
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }
