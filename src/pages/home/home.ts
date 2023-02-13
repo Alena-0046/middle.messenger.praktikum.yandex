@@ -1,13 +1,16 @@
-import Block from '../../core/block.ts'
-import Navigation from '../../components/navigation/navigation.ts'
+import Block from '../../core/block'
+import Navigation from '../../components/navigation/navigation'
 import template from './home.hbs'
 
 export default class HomePage extends Block {
   constructor () {
-    super('main', 'home-page', {}, { navigation: new Navigation() })
+    super('main', {
+      attr: { class: 'home-page' },
+      navigation: new Navigation(),
+    })
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }

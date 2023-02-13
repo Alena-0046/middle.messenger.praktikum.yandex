@@ -1,5 +1,5 @@
 // import { PageIds } from '../../app.ts'
-import Block from '../../core/block.ts'
+import Block from '../../core/block'
 import template from './navigation.hbs'
 
 const Pages = [
@@ -12,12 +12,15 @@ const Pages = [
   // { url:'./5xx', text:'Страница 5хх ошибок'},
 ]
 
-export default class HomePage extends Block {
+export default class Navigation extends Block {
   constructor () {
-    super('nav', 'navigation', { pages: Pages }, {})
+    super('nav', {
+      attr: { class: 'navigation' },
+      pages: Pages,
+    })
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }

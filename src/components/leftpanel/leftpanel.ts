@@ -1,12 +1,12 @@
-import Block from '../../core/block.ts'
+import Block from '../../core/block'
 import template from './leftpanel.hbs'
 
 export default class LeftPanel extends Block {
   constructor () {
-    super('div', 'left-panel', {}, {})
+    super('div', { attr: { class: 'left-panel' } })
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }

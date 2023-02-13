@@ -1,12 +1,12 @@
-import Block from '../../core/block.ts'
+import Block from '../../core/block'
 import template from './rightpanel.hbs'
 
 export default class RightPanel extends Block {
   constructor () {
-    super('div', 'right-panel', {}, {})
+    super('div', { attr: { class: 'right-panel' } })
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }

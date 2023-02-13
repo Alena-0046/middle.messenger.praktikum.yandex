@@ -1,11 +1,42 @@
 import Block from '../../core/block.ts'
 
 export default class Input extends Block {
-  constructor (className: string, props: Record<string, string>, events: Record<string, unknown>) {
-    super('input', className, props, {}, events)
+  constructor (props: Record<string, unknown> = {}) {
+    super('input', props)
   }
-
-  compile (): HTMLElement {
-    return this.props.text
-  }
+/*
+  validate (): boolean {
+    let result = true
+    switch (this.element.props.name) {
+      case 'first_name':
+      case 'second_name':
+        const name = new RegExp('^$')
+        result = name.test(this.element.value)
+        break
+      case 'login':
+        const login = new RegExp('^$')
+        result = login.test(this.element.value)
+        break
+      case 'email':
+        const email = new RegExp('^$')
+        result = email.test(this.element.value)
+        break
+      case 'password':
+        const strongPassword = new RegExp('^(?=.*[A-Z])(?=.*[0-9]).{8,40}$')
+        result = strongPassword.test(this.element.value)
+        break
+      case 'phone':
+        const phone = new RegExp('^[\+]?[0-9]{10,15}$')
+        result = phone.test(this.element.value)
+        break
+      case 'message':
+        const notEmpty = new RegExp('^.+$')
+        result = notEmpty.test(this.element.value)
+        break
+      default:
+        console.log('Input - validate - default case')
+        break
+    }
+    return result
+  }*/
 }

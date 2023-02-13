@@ -8,128 +8,182 @@ enum EVENTS {
 }
 
 export default abstract class Block {
-  protected id: string
-  protected element: HTMLElement
-  protected class: string
-  // protected meta: Object
-  protected props: Record<string, string>
-  protected children: Record<string, Block>
-  protected events: Record<string, unknown>
-  protected setUpdate: boolean
+  protected _element: HTMLElement
+  protected _meta: Record<string, unknown>
+  protected props: Record<string, unknown>
+  protected children: Record<string, Block | Block[]>
   protected eventBus: EventBus
 
-  constructor (tagName: string, className: string, props: Record <string, string>, children: Record<string, Block>, events: Record<string, unknown> = {}) {
-    this.element = document.createElement(tagName)
-    this.element.classList.add(className)
+  constructor (tag: string, all: Record<string, unknown>) {
+    // this._element = document.createElement(tag)
+    this._meta = { tag, all }
 
-    this.props = props
-    this.children = children
-    this.events = events
+    const tempProps = {}
+    const tempChildren = {}
+    Object.entries(all).forEach(([key, value]) => {
+      if (value instanceof Block ||
+      (Array.isArray(value) && value.length > 0 && value[0] instanceof Block)) {
+        tempChildren[key] = value
+      } else {
+        tempProps[key] = value
+      }
+    })
+
+    this.props = this._makePropsProxy(tempProps)
+    this.children = tempChildren
 
     this.eventBus = new EventBus()
     this.registerEvents()
     this.eventBus.emit(EVENTS.INIT)
   }
 
-  getElement (): HTMLElement {
-    return this.element
-  }
-
-  getPropsAndChildren (): Record<string, string | Block> {
-    const combined = { ...this.props, ...this.children }
-    Object.keys(this.children).forEach((key) => {
-      const value = this.children[key].getElement().outerHTML
-      combined[key] = value
-    })
-    /* for (const key in this.children) {
-      if (this.children.hasOwnProperty(key)) {
-      const value = this.children[key].getElement().outerHTML
-      combined[key] = value
-      }
-    }*/
-    return combined
-  }
-
   registerEvents (): void {
     this.eventBus.on(EVENTS.INIT, this.init.bind(this))
-    // this.eventBus.on(EVENTS.FLOW_CMD, this.componentDidMount.bind(this))
-    // this.eventBus.on(EVENTS.FLOW_CPU, this.componentDidUpdate.bind(this))
-    this.eventBus.on(EVENTS.FLOW_RENDER, this.render.bind(this))
+    this.eventBus.on(EVENTS.FLOW_CMD, this._componentDidMount.bind(this))
+    this.eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
+    this.eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
   init (): void {
-    // console.log(`Block - init - started, tag = ${this.tag}`)
-    // this.element = document.createElement(this.tag)
-    this.element.id = 'abcd'
+    console.log('init')
+    const { tag } = this._meta
+    this._element = document.createElement(tag)
     this.eventBus.emit(EVENTS.FLOW_RENDER)
   }
 
-  abstract compile (): HTMLElement
-
-  render (): void {
-    this.removeEvents()
-    this.element.innerHTML = ''
-    this.element.innerHTML = this.compile()
-    this.addEvents()
+  _componentDidMount (): void {
+    // this.componentDidMount()
   }
 
-  addEvents (): void {
-    Object.keys(this.events).forEach((e) => {
-      this.element.addEventListener(e, this.events[e])
-    })
-  }
-
-  removeEvents() : void {
-  }
-
-  show (): void {
-    this.getElement().style.display = 'block'
-  }
-
-  hide (): void {
-    this.getElement().style.display = 'none'
-  }
-
-  componentDidMount (): void {
+  componentDidMount (oldProps: Record<string, unknown>): void {
   }
 
   dispatchComponentDidMount (): void {
-    this.eventBus.emit(Events.FLOW_CMD)
+    this.eventBus.emit(EVENTS.FLOW_CMD)
   }
 
-  _componentDidUpdate (oldProps: object, newProps: object): void {
-    const response = this.componentDidUpdate(oldProps, newProps)
-    if (response) {
-      this._render()
+  _componentDidUpdate (oldProps: Record<string, unknown>, newProps: Record<string, unknown>): void {
+    const needRender = this.componentDidUpdate(oldProps, newProps)
+    if (needRender) {
+      _render()
     }
   }
 
-  componentDidUpdate (oldProps: object, newProps: object): boolean {
+  componentDidUpdate (oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
     return true
   }
 
-  setProps (newProps: object): void {
-    if (newProps != null) {
-      Object.assign(this.props, newProps)
-    }
+  _render (): void {
+    this._removeEvents()
+    this._element.innerHTML = this.render()
+    this._addAttributes()
+    this._addEvents()
   }
 
-  private makePropsProxy (props: unknown): unknown {
-    // const self = this
-    console.log('Block - makePropsProxy - start')
+  _addAttributes (): void {
+    const { attr = {} } = this.props
+    Object.entries(attr).forEach(([key, value]) => {
+      if (key === 'class') {
+        this._element.classList.add(value)
+      } else {
+        this._element[key] = value
+      }
+    })
+  }
+
+  render (): string {
+    const text = this.props.text
+    if (typeof text === 'string') {
+      return text
+    }
+    return ''
+  }
+
+  _makePropsProxy (props: Record<string, unknown>): Record<string, unknown> {
     return new Proxy(props, {
-      get (target: unknown, prop: unknown): unknown {
-        const value: unknown = target[prop]
+      get (target: Record<string, unknown>, prop: string): any {
+        const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
-      set (target: unknown, prop: unknown, value: unknown): boolean {
+      set (target: Record<string, unknown>, prop: string, value: any): boolean {
         target[prop] = value
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, self._prevProps, target)
         return true
       },
-      deleteProperty () {
+      deleteProperty (): boolean {
         throw new Error('Нет доступа')
       },
     })
+  }
+
+  /* setProps = (nextProps) => {
+    if (nextProps == null) {
+      return
+    }
+  }*/
+  setProps (nextProps: Record<string, unknown>): void {
+    /* if (nextProps == null) {
+      return
+    }
+    */
+  }
+
+  get element (): HTMLElement {
+    return this._element
+  }
+
+  getPropsAndChildren (): Record<string, unknown> {
+    const combined = { ...this.props }
+    Object.entries(this.children).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        combined[key] = value.element.outerHTML
+      } else {// value is Block[]
+        combined[key] = ''
+        value.forEach((child) => {
+          combined[key] = (combined[key] as string) + (child.element.outerHTML as string)
+        })
+      }
+    })
+
+    return combined
+  }
+
+  /* getContent (): HTMLElement {
+    return this.element
+  }*/
+
+  show (): void {
+    this._element.style.display = 'block'
+  }
+
+  hide (): void {
+    this._element.style.display = 'none'
+  }
+
+  private _addEvents (): void {
+    const { events = {} } = this.props
+
+    Object.entries(events).forEach(([key, value]) => {
+      this._element.addEventListener(key, value.handler, value.capture)
+    })
+    /* Object.keys(events).forEach((eventName) => {
+      this._element.addEventListener(eventName, events[eventName])
+    })*/
+  }
+
+  private _removeEvents (): void {
+    const { events = {} } = this.props
+
+    Object.entries(events).forEach(([key, value]) => {
+      this._element.removeEventListener(key, value.handler)
+    })
+  }
+
+  static renderDOM (query: string, block: Block): Element {
+    const root = document.querySelector(query)
+
+    root.append(block.getContent())
+    block.dispatchComponentDidMount()
+
+    return root
   }
 }

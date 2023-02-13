@@ -1,19 +1,20 @@
-import Block from '../../core/block.ts'
-import LeftPanel from '../../components/leftpanel/leftpanel.ts'
-import RightPanel from '../../components/rightpanel/rightpanel.ts'
+import Block from '../../core/block'
+import LeftPanel from '../../components/leftpanel/leftpanel'
+import RightPanel from '../../components/rightpanel/rightpanel'
 import template from './user.hbs'
 
 export default class UserPage extends Block {
   constructor () {
     console.log('User ctor')
-    const children = {
+
+    super('main', {
+      attr: { class: 'user-page' },
       leftpanel: new LeftPanel(),
       rightpanel: new RightPanel(),
-    }
-    super('main', 'user-page', {}, children)
+    })
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }

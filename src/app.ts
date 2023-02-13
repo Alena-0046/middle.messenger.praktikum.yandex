@@ -1,10 +1,10 @@
-import HomePage from './pages/home/home.ts'
-import LoginPage from './pages/login/login.ts'
-import SignupPage from './pages/signup/signup.ts'
-import ProfilePage from './pages/profile/profile.ts'
-import UserPage from './pages/user/user.ts'
-import ErrorPage from './pages/error/error.ts'
-import type Block from './core/block.ts'
+import HomePage from './pages/home/home'
+import LoginPage from './pages/login/login'
+import SignupPage from './pages/signup/signup'
+import ProfilePage from './pages/profile/profile'
+import UserPage from './pages/user/user'
+import ErrorPage from './pages/error/error'
+import type Block from './core/block'
 
 export const enum PageIds {
   Home = 'home',
@@ -48,8 +48,7 @@ export default class App {
 
     if (page != null) {
       App.bodyContainer.innerHTML = ''
-      // console.log('LoadNewPage - page.getElement(): ' + page.getElement().innerHTML)
-      App.bodyContainer.append(page.getElement())
+      App.bodyContainer.append(page.element)
     }
   }
 

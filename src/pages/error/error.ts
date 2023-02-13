@@ -1,12 +1,12 @@
-import Block from '../../core/block.ts'
+import Block from '../../core/block'
 import template from './error.hbs'
 
 export default class ErrorPage extends Block {
   constructor () {
-    super('main', 'error-page', {}, {})
+    super('main', { attr: { class: 'error-page' } })
   }
 
-  compile (): HTMLElement {
+  render (): string {
     return template(this.getPropsAndChildren())
   }
 }
