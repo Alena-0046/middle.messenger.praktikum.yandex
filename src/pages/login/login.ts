@@ -30,6 +30,7 @@ export default class LoginPage extends Block {
     props.events = {
       submit: {
         handler: (e) => {
+          console.log('Login Form - submit event')
           e.preventDefault()
           InputGroup.validate()
         },
@@ -39,6 +40,12 @@ export default class LoginPage extends Block {
         handler: (e) => {
           e.preventDefault()
           console.log('Login Form - focus event')
+          // Do not validate input on focus event
+          // Users won't see red labels after clicking on input
+          
+          //if(e.target != null && e.target instanceof HTMLInputElement) {
+            //InputGroup.validateInputGroup(e.target)
+          //}
         },
         capture: true,
       },
@@ -46,6 +53,9 @@ export default class LoginPage extends Block {
         handler: (e) => {
           e.preventDefault()
           console.log('Login Form - blur event')
+          if(e.target != null && e.target instanceof HTMLInputElement) {
+            InputGroup.validateInputGroup(e.target)
+          }
         },
         capture: true,
       },

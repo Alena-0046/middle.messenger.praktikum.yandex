@@ -45,7 +45,6 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   }
 
   init (): void {
-    console.log('init')
     const { tag } = this._meta
     this._element = document.createElement(tag)
     this.eventBus.emit(EVENTS.FLOW_RENDER)
@@ -101,11 +100,11 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
 
   private _makePropsProxy (props: Props): Props {
     return new Proxy(props, {
-      get (target: Record<string, unknown>, prop: string): any {
+      get (target: Props, prop: string): unknown {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
-      set (target: Record<string, unknown>, prop: string, value: any): boolean {
+      set (target: Props, prop: string, value: unknown): boolean {
         target[prop] = value
         return true
       },
@@ -126,7 +125,7 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     return this._element
   }
 
-  getPropsAndChildren (): Record<string, unknown> {
+  getPropsAndChildren (): Props {
     const combined = { ...this.props }
     Object.entries(this.children).forEach(([key, value]) => {
       if (value instanceof Block) {
