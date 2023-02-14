@@ -50,12 +50,21 @@ export default class ProfilePage extends Block {
       focus: {
         handler: (e) => {
           console.log('Profile - focus event')
+          // Do not validate input on focus event
+          // Users won't see red labels after clicking on input
+          
+          //if(e.target != null && e.target instanceof HTMLInputElement) {
+          //  InputGroup.validateInputGroup(e.target)
+          //}
         },
         capture: true,
       },
       blur: {
         handler: (e) => {
           console.log('Profile - blur event')
+          if(e.target != null && e.target instanceof HTMLInputElement) {
+            InputGroup.validateInputGroup(e.target)
+          }
         },
         capture: true,
       },

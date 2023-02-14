@@ -56,7 +56,6 @@ export default class InputGroup extends Block {
         span: 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
       },
     }
-    console.log(inputData[type].text)
 
     const props = {
       attr: { class: 'input-group' },
@@ -85,33 +84,33 @@ export default class InputGroup extends Block {
   static validate (): boolean {
     const fields = {}
     let result = true
-    const className = 'input-group'
-    const groups = document.querySelectorAll('.' + className)
-
-    groups.forEach((group) => {
-      const input = group.children[0].children[1] as HTMLInputElement
-      const span = group.children[1] as HTMLElement
-
-      if (this.validateInput(input)) {
-        console.log('OK, ' + input.name + ': ' + input.value)
-        span.style.display = 'none'
-      } else {
-        result = false
-        span.style.display = 'block'
-        console.log('Validation failed: ' + input.name + ': ' + input.value)
-      }
+    const inputs = document.querySelectorAll('input')
+    inputs.forEach((input) => {
+      InputGroup.validateInputGroup(input)
       fields[input.name] = input.value
     })
-
     return result
+  }
+  static validateInputGroup(input: HTMLInputElement): boolean{
+    const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
+
+    if (this.validateInput(input)) {
+      console.log('OK, ' + input.name + ': ' + input.value)
+      span.style.display = 'none'
+      return true
+    } else {
+      span.style.display = 'block'
+      console.log('Validation failed: ' + input.name + ': ' + input.value)
+      return false
+    }
   }
 
   static validateInput (input: HTMLInputElement): boolean {
     if (input.value === null || input.value === '') {
       return false
     }
-    const name = /^[A-ZЁА-Я][A-Za-zЁёА-Яа-я-]+$/ // new RegExp('^[ЁА-ЯA-Z]+[ЁёА-Яа-я-]$')
-    const login = /^(?=.*[A-Za-z])[A-Za-z0-9]{3,20}$/ // new RegExp('^(?=.*[A-Za-z])[A-Za-z0-9]{3,20}$')
+    const name = /^[A-ZЁА-Я][A-Za-zЁёА-Яа-я-]*$/ // new RegExp('^[ЁА-ЯA-Z]+[ЁёА-Яа-я-]$')
+    const login = /^(?=.*[A-Za-z])[A-Za-z0-9-_]{3,20}$/ // new RegExp('^(?=.*[A-Za-z])[A-Za-z0-9]{3,20}$')
     const email = /^[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+$/ // new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z]+.[A-Za-z]$')
     const password = /^(?=.*[A-Z])(?=.*[0-9]).{8,40}$/ // new RegExp('^(?=.*[A-Z])(?=.*[0-9]).{8,40}$')
     const phone = /^\+?[0-9]{10,15}$/ // new RegExp('^[\+]?[0-9]{10,15}$')

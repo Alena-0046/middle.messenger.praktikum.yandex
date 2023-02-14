@@ -7,14 +7,14 @@ enum EVENTS {
   FLOW_RENDER = 'flow:render',
 }
 
-export default abstract class Block {
+export default abstract class Block<Props extends Record<string, any> = unknown> {
   protected _element: HTMLElement
   protected _meta: Record<string, unknown>
-  protected props: Record<string, unknown>
+  protected props: Props
   protected children: Record<string, Block | Block[]>
   protected eventBus: EventBus
 
-  constructor (tag: string, all: Record<string, unknown>) {
+  constructor (tag: string, all: Props) {
     // this._element = document.createElement(tag)
     this._meta = { tag, all }
 
@@ -45,31 +45,30 @@ export default abstract class Block {
   }
 
   init (): void {
-    console.log('init')
     const { tag } = this._meta
     this._element = document.createElement(tag)
     this.eventBus.emit(EVENTS.FLOW_RENDER)
   }
 
-  _componentDidMount (): void {
-    // this.componentDidMount()
+  private _componentDidMount (): void {
+    this.componentDidMount()
   }
 
-  componentDidMount (oldProps: Record<string, unknown>): void {
+  componentDidMount (): void {
   }
 
   dispatchComponentDidMount (): void {
     this.eventBus.emit(EVENTS.FLOW_CMD)
   }
 
-  _componentDidUpdate (oldProps: Record<string, unknown>, newProps: Record<string, unknown>): void {
+  _componentDidUpdate (oldProps: Props, newProps: Props): void {
     const needRender = this.componentDidUpdate(oldProps, newProps)
     if (needRender) {
       _render()
     }
   }
 
-  componentDidUpdate (oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
+  componentDidUpdate (oldProps: Props, newProps: Props): boolean {
     return true
   }
 
@@ -80,7 +79,7 @@ export default abstract class Block {
     this._addEvents()
   }
 
-  _addAttributes (): void {
+  private _addAttributes (): void {
     const { attr = {} } = this.props
     Object.entries(attr).forEach(([key, value]) => {
       if (key === 'class') {
@@ -99,13 +98,13 @@ export default abstract class Block {
     return ''
   }
 
-  _makePropsProxy (props: Record<string, unknown>): Record<string, unknown> {
+  private _makePropsProxy (props: Props): Props {
     return new Proxy(props, {
-      get (target: Record<string, unknown>, prop: string): any {
+      get (target: Props, prop: string): unknown {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
-      set (target: Record<string, unknown>, prop: string, value: any): boolean {
+      set (target: Props, prop: string, value: unknown): boolean {
         target[prop] = value
         return true
       },
@@ -115,23 +114,18 @@ export default abstract class Block {
     })
   }
 
-  /* setProps = (nextProps) => {
+  setProps = (nextProps: Props): void => {
     if (nextProps == null) {
       return
     }
-  }*/
-  setProps (nextProps: Record<string, unknown>): void {
-    /* if (nextProps == null) {
-      return
-    }
-    */
+    Object.assign(this.props, nextProps)
   }
 
   get element (): HTMLElement {
     return this._element
   }
 
-  getPropsAndChildren (): Record<string, unknown> {
+  getPropsAndChildren (): Props {
     const combined = { ...this.props }
     Object.entries(this.children).forEach(([key, value]) => {
       if (value instanceof Block) {
@@ -147,16 +141,16 @@ export default abstract class Block {
     return combined
   }
 
-  /* getContent (): HTMLElement {
+  getContent (): HTMLElement {
     return this.element
-  }*/
+  }
 
   show (): void {
-    this._element.style.display = 'block'
+    this.getContent().style.display = 'block'
   }
 
   hide (): void {
-    this._element.style.display = 'none'
+    this.getContent().style.display = 'none'
   }
 
   private _addEvents (): void {
