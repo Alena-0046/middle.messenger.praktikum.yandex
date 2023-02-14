@@ -27,20 +27,22 @@ function queryStringify (data: any): string {
   return result
 }
 
+type HTTPMethod = (url: string, options?: Options) => Promise<XMLHTTPRequest>
+
 export class HTTPTransport {
-  async get (url: string, options: Options = { method: METHOD.GET }): Promise<XMLHTTPRequest> {
+  async get: HTTPMethod = (url, options = {}) => {
     return await this.request(url, { ...options, method: METHODS.GET }, options.timeout)
   }
 
-  async post (url: string, options: Options = { method: METHOD.POST }): Promise<XMLHTTPRequest> {
+  async post: HTTPMethod = (url, options = {}) => {
     return await this.request(url, { ...options, method: METHODS.POST }, options.timeout)
   }
 
-  async put (url: string, options: Options = { method: METHOD.PUT }): Promise<XMLHTTPRequest> {
+  async put: HTTPMethod = (url, options = {}) => {
     return await this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
   }
 
-  async delete (url: string, options: Options = { method: METHOD.DELETE }): Promise<XMLHTTPRequest> {
+  async delete: HTTPMethod = (url, options = {}) => {
     return await this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
   }
 
