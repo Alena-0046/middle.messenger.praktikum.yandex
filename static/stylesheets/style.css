@@ -1,21 +1,23 @@
-@import './variables.css';
-@import '../../src/components/contact.css';
-@import '../../src/components/leftpanel.css';
-@import '../../src/components/rightpanel.css';
+@import url("./variables.css");
+@import url("../../src/components/contact/contact.css");
+@import url("../../src/components/leftpanel/leftpanel.css");
+@import url("../../src/components/rightpanel/rightpanel.css");
+@import url("../../src/pages/login/login.css");
+@import url("../../src/pages/profile/profile.css");
+@import url("../../src/pages/signup/signup.css");
+@import url("../../src/pages/user/user.css");
 
-@import '../../src/pages/login.css';
-@import '../../src/pages/profile.css';
-@import '../../src/pages/signup.css';
-@import '../../src/pages/user.css';
+@import url("../../src/pages/error/error.css")
 
-* {
+  * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   text-decoration: none;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -57,7 +59,7 @@ input {
   padding: 0.5em;
 }
 
-input[type='search'] {
+input[type="search"] {
   border: hidden;
   background-color: $background-color;
   margin: 1em;
@@ -83,6 +85,10 @@ nav ul {
 
 nav li {
   margin: 3em;
+}
+
+span {
+  color: red;
 }
 
 .circle {
