@@ -1,21 +1,39 @@
-import HomePage from './pages/home/home'
+// import HomePage from './pages/home/home'
 import LoginPage from './pages/login/login'
 import SignupPage from './pages/signup/signup'
 import ProfilePage from './pages/profile/profile'
 import UserPage from './pages/user/user'
-import ErrorPage from './pages/error/error'
-import type Block from './core/block'
+// import ErrorPage from './pages/error/error'
+import Router from './core/router'
+// import type Block from './core/block'
 
-export const enum PageIds {
-  Home = 'home',
+export const enum Pages {
+  Login = '/',
+  SignUp = '/sign-up',
+  Settings = '/settings',
+  Messenger = '/messenger',
+  /* Home = 'home',
   User = 'user',
   Profile = 'profile',
   Login = 'login',
-  Signup = 'signup',
+  Signup = 'signup',*/
 }
 
 export default class App {
-  private static readonly bodyContainer: HTMLElement = document.body
+  private static readonly router: Router
+
+  constructor () {
+    this.router = new Router('.app')
+    this.router.use(Pages.Login, LoginPage)
+      .use(Pages.SignUp, SignupPage)
+      .use(Pages.Settings, ProfilePage)
+      .use(Pages.Messenger, UserPage)
+  }
+
+  run (): void {
+    this.router.start()
+  }
+  /* private static readonly bodyContainer: HTMLElement = document.body
 
   static loadPage (pageId: string): void {
     let page: Block | null = null
@@ -63,5 +81,5 @@ export default class App {
   run (): void {
     App.loadPage(PageIds.Home)
     this.enableRouteChange()
-  }
+  }*/
 }
