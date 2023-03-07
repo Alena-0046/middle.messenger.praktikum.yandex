@@ -61,29 +61,58 @@ export default class InputGroup extends Block {
       attr: { class: 'input-group' },
       order: className,
       label: new Label({
-        attr: { class: 'signup-page__label' },
-        text: inputData[type].text,
+        attr: {
+          class: 'signup-page__label',
+          textContent: inputData[type].text,
+        },
       }),
       input: new Input({
         attr: {
           name: inputData[type].name,
           type: inputData[type].type,
         },
+        events: {
+          focus: {
+            handler: (e) => {
+              console.log('Input - focus event')
+              // Do not validate input on focus event
+              // Users won't see red labels after clicking on input
+
+              // if(e.target != null && e.target instanceof HTMLInputElement) {
+              //  InputGroup.validateInputGroup(e.target)
+              // }
+            },
+            capture: true,
+          },
+          blur: {
+            handler: (e) => {
+              console.log('Input - blur event')
+              if (e.target != null) {
+                InputGroup.validateInputGroup(e.target)
+              }
+            },
+            capture: true,
+          },
+        },
       }),
-      span: new Span({ text: inputData[type].span }),
+      span: new Span({ attr: { textContent: inputData[type].span } }),
     }
 
     super('div', props)
   }
 
-  render (): string {
+  render (): DocumentFragment {
+    this.children.span.hide()
+    return this.compile(template, this.props)
+  }
+  /* render (): string {
     this.children.span.hide()
     return template(this.getPropsAndChildren())
-  }
+  }*/
 
   static validate (): boolean {
     const fields = {}
-    let result = true
+    const result = true
     const inputs = document.querySelectorAll('input')
     inputs.forEach((input) => {
       InputGroup.validateInputGroup(input)
@@ -91,7 +120,8 @@ export default class InputGroup extends Block {
     })
     return result
   }
-  static validateInputGroup(input: HTMLInputElement): boolean{
+
+  static validateInputGroup (input: HTMLInputElement): boolean {
     const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
 
     if (this.validateInput(input)) {

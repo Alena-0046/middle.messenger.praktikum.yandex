@@ -6,7 +6,7 @@ export default class RightPanel extends Block {
     super('div', { attr: { class: 'right-panel' } })
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }

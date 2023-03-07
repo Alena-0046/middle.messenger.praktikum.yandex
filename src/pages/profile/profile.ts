@@ -17,14 +17,25 @@ export default class ProfilePage extends Block {
         new InputGroup('profile__input-group', 'password'),
         new InputGroup('profile__input-group', 'password_repeat'),
       ],
-      buttons: [
-        /* new Button({
+      buttons: /* [
+         new Button({
           attr: { class: 'save_button' },
           text: 'Сохранить',
         }),*/
         new Button({
-          attr: { class: 'buttons__change-data-button' },
-          text: 'Изменить данные',
+          attr: {
+            class: 'buttons__change-data-button',
+            textContent: 'Изменить данные',
+          },
+          events: {
+            click: {
+              handler: (e) => {
+                console.log('Profile - ChangeData button clicked')
+                InputGroup.validate()
+              },
+              capture: false,
+            },
+          },
         }), /*
         new Button({
           attr: { class: 'buttons__change-password' },
@@ -33,47 +44,14 @@ export default class ProfilePage extends Block {
         new Button({
           attr: { class: 'buttons__exit-button' },
           text: 'Выйти',
-        }),*/
-      ],
-    }
-
-    props.events = {
-      click: {
-        handler: (e) => {
-          if (e.target != null && e.target instanceof HTMLButtonElement) {
-            InputGroup.validate()
-          }
-          console.log('Profile - click event')
-        },
-        capture: false,
-      },
-      focus: {
-        handler: (e) => {
-          console.log('Profile - focus event')
-          // Do not validate input on focus event
-          // Users won't see red labels after clicking on input
-          
-          //if(e.target != null && e.target instanceof HTMLInputElement) {
-          //  InputGroup.validateInputGroup(e.target)
-          //}
-        },
-        capture: true,
-      },
-      blur: {
-        handler: (e) => {
-          console.log('Profile - blur event')
-          if(e.target != null && e.target instanceof HTMLInputElement) {
-            InputGroup.validateInputGroup(e.target)
-          }
-        },
-        capture: true,
-      },
+        }),
+      ],*/
     }
 
     super('main', props)
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }

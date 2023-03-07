@@ -10,7 +10,7 @@ export default class HomePage extends Block {
     })
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }
