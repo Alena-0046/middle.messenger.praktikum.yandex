@@ -20,7 +20,7 @@ export default class Navigation extends Block {
     })
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }

@@ -39,6 +39,7 @@
     "stylelint-config-standard": "25.0.0",
     "stylelint-selector-bem-pattern": "2.1.1",
     "typescript": "4.9.5",
+    "uuid": "9.0.0",
     "webpack": "5.75.0"
   },
   "engines": {

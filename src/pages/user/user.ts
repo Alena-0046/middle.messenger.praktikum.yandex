@@ -5,8 +5,6 @@ import template from './user.hbs'
 
 export default class UserPage extends Block {
   constructor () {
-    console.log('User ctor')
-
     super('main', {
       attr: { class: 'user-page' },
       leftpanel: new LeftPanel(),
@@ -14,7 +12,7 @@ export default class UserPage extends Block {
     })
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }

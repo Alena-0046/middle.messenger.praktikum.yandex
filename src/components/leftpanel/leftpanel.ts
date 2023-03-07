@@ -6,7 +6,7 @@ export default class LeftPanel extends Block {
     super('div', { attr: { class: 'left-panel' } })
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }

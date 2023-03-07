@@ -22,27 +22,27 @@ export default class App {
     switch (pageId) {
       case PageIds.Home:
         console.log('Create Home Page')
-        page = new HomePage(pageId)
+        page = new HomePage()
         break
       case PageIds.User:
         console.log('Create User Page')
-        page = new UserPage(pageId)
+        page = new UserPage()
         break
       case PageIds.Profile:
         console.log('Create Profile Page')
-        page = new ProfilePage(pageId)
+        page = new ProfilePage()
         break
       case PageIds.Login:
         console.log('Create Login Page')
-        page = new LoginPage(pageId)
+        page = new LoginPage()
         break
       case PageIds.Signup:
         console.log('Create Signup Page')
-        page = new SignupPage(pageId)
+        page = new SignupPage()
         break
       default:
         console.log('Here should be error')
-        page = new ErrorPage(pageId)
+        page = new ErrorPage()
         break
     }
 
