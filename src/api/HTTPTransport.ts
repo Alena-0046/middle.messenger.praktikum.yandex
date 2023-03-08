@@ -71,8 +71,12 @@ export default class HTTPTransport {
       })
       xhr.withCredentials = true
       xhr.onload = function () {
-        //console.log('HTTPTransport - request - onLoad - ' + xhr.response)
-        resolve(xhr)
+        // console.log('HTTPTransport - request - onLoad - ' + xhr.response)
+        if (xhr.status === 200) {
+          resolve(xhr)
+        } else {
+          reject(xhr)
+        }
       }
 
       xhr.onabort = reject

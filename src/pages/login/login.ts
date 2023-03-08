@@ -4,6 +4,9 @@ import Form from '../../components/form/form'
 import InputGroup from '../../components/inputgroup/inputgroup'
 import Link from '../../components/link/link'
 import template from './login.hbs'
+import authController from '../../controllers/authController'
+import { type SigninData } from '../api/authAPI'
+import store, { StoreEvents } from '../../core/store'
 
 export default class LoginPage extends Block {
   constructor () {
@@ -21,7 +24,7 @@ export default class LoginPage extends Block {
           attr: {
             class: 'login-page__link',
             textContent: 'Нет аккаунта?',
-            href: '#signup',
+            href: 'sign-up',
           },
         }),
       }),
@@ -32,12 +35,20 @@ export default class LoginPage extends Block {
         handler: (e) => {
           console.log('Login Form - submit event')
           e.preventDefault()
-          InputGroup.validate()
+          const data = InputGroup.validate()
+          if (data !== null) {
+            // console.log('LoginPage - submit - data: ' + data)
+            authController.signin(data as SigninData)
+          }
         },
         capture: false,
       },
     }
     super('main', props)
+
+    store.on(StoreEvents.Updated, () => {
+      this.setProps(store.getState())
+    })
   }
 
   render (): DocumentFragment {

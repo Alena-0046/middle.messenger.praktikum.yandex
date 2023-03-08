@@ -2,6 +2,9 @@ import Block from '../../core/block'
 import Button from '../../components/button/button'
 import InputGroup from '../../components/inputgroup/inputgroup'
 import template from './profile.hbs'
+import authController from '../../controllers/authController'
+// import { type SignupData } from '../api/authAPI'
+// import store, { StoreEvents } from '../../core/store'
 
 export default class ProfilePage extends Block {
   constructor () {
@@ -17,7 +20,7 @@ export default class ProfilePage extends Block {
         new InputGroup('profile__input-group', 'password'),
         new InputGroup('profile__input-group', 'password_repeat'),
       ],
-      buttons: /* [
+      buttons: [/*
          new Button({
           attr: { class: 'save_button' },
           text: 'Сохранить',
@@ -40,12 +43,23 @@ export default class ProfilePage extends Block {
         new Button({
           attr: { class: 'buttons__change-password' },
           text: 'Изменить пароль',
-        }),
+        }),*/
         new Button({
-          attr: { class: 'buttons__exit-button' },
-          text: 'Выйти',
+          attr: {
+            class: 'buttons__exit-button',
+            textContent: 'Выйти',
+          },
+          events: {
+            click: {
+              handler: (e) => {
+                console.log('Profile - Exit clicked')
+                authController.logout()
+              },
+              capture: false,
+            },
+          },
         }),
-      ],*/
+      ],
     }
 
     super('main', props)

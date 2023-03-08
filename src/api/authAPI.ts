@@ -14,17 +14,17 @@ export type SignupData = {
   phone: string
 }
 
-export default class AuthAPI extends BaseAPI {
+class AuthAPI extends BaseAPI {
   constructor () {
     super('https://ya-praktikum.tech/api/v2/auth')
   }
 
   async signup (data: SignupData): Promise<XMLHttpRequest> {
+    console.log('authAPI - signup - data: ' + JSON.stringify(data))
     return await this.http.post('/signup', { data, headers: { 'Content-Type': 'application/json' } })
   }
 
   async getUser (): Promise<XMLHttpRequest> {
-    console.log('GetUser')
     return await this.http.get('/user')
   }
 
@@ -36,3 +36,4 @@ export default class AuthAPI extends BaseAPI {
     return await this.http.post('/logout')
   }
 }
+export default new AuthAPI()

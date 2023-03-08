@@ -110,7 +110,7 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     Object.entries(this.children).forEach(([name, child]) => {
       // console.log('Block - compile() - sort children')
       if (Array.isArray(child)) {
-        //console.log('Block - compile - isArray , name: ' + name)
+        // console.log('Block - compile - isArray , name: ' + name)
         let result: string = ''
         for (let i = 0; i < child.length; i++) {
           result += `<div data-id="${child[i].id}">${name}${i}</div>`
