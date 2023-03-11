@@ -1,11 +1,12 @@
 import Route from './route'
+// import Block from './block'
 
 export default class Router {
   private readonly routes: Route[]
   private readonly history: History
   private _currentRoute: Route | null
-  private readonly rootQuery: string
-  private static readonly _instance: Router | null
+  private readonly _rootQuery: string
+  private static __instance: Router | null
 
   constructor (rootQuery: string) {
     if (Router.__instance != null) {
@@ -20,17 +21,19 @@ export default class Router {
     Router.__instance = this
   }
 
-  use (pathname: string, block): Router {
-    console.log('Router - use - ' + pathname)
+  use (pathname: string, block: unknown): Router {
+    // console.log('Router - use - ' + pathname)
     const route = new Route(pathname, block, { rootQuery: this._rootQuery })
     this.routes.push(route)
     return this
   }
 
   start (): void {
-    console.log('Router - start - ')
-    window.onpopstate = (event) => {
-      this._onRoute(event.currentTarget.location.pathname)
+    // console.log('Router - start - ')
+    window.onpopstate = (event: PopStateEvent) => {
+      console.log('WINDOW ON_POP_STATE_CHANGE')
+      const target = event.currentTarget as Window
+      this._onRoute(target.location.pathname)
     }
     this._onRoute(window.location.pathname)
   }
@@ -47,8 +50,8 @@ export default class Router {
     }
 
     this._currentRoute = route
-    console.log('Router - _onRoute - execute render')
-    route.render(route, pathname)
+    // console.log('Router - _onRoute - execute render')
+    route.render()
   }
 
   go (pathname: string): void {
@@ -70,7 +73,7 @@ export default class Router {
     window.history.forward()
   }
 
-  getRoute (pathname): Route | null {
+  getRoute (pathname: string): Route | undefined {
     return this.routes.find((route) => route.match(pathname))
   }
 }

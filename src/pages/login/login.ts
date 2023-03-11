@@ -5,8 +5,9 @@ import InputGroup from '../../components/inputgroup/inputgroup'
 import Link from '../../components/link/link'
 import template from './login.hbs'
 import authController from '../../controllers/authController'
-import { type SigninData } from '../api/authAPI'
+import { type SigninData } from '../../api/authAPI'
 import store, { StoreEvents } from '../../core/store'
+import Router from '../../core/router'
 
 export default class LoginPage extends Block {
   constructor () {
@@ -20,33 +21,48 @@ export default class LoginPage extends Block {
           new InputGroup('login-page__input-groups', 'password'),
         ],
         button: new Button({ attr: { textContent: 'Авторизоваться' } }),
-        link: new Link({
+        link: new Button({
           attr: {
             class: 'login-page__link',
             textContent: 'Нет аккаунта?',
-            href: 'sign-up',
+            //href: 'sign-up',
+          },
+          href: '/sign-up',
+          events: {
+            click: {
+              handler: (e) => {
+                e.preventDefault()
+                console.log('LoginPage - Link clicked')
+                const router = new Router()
+                router.go('/sign-up')
+                //router.go('/sign-up')
+              },
+              capture: false,
+            },
           },
         }),
       }),
-    }
-
-    props.events = {
-      submit: {
-        handler: (e) => {
-          console.log('Login Form - submit event')
-          e.preventDefault()
-          const data = InputGroup.validate()
-          if (data !== null) {
+      events: {
+        submit: {
+          handler: (e: Event) => {
+            console.log('Login Form - submit event')
+            e.preventDefault()
+            const data = InputGroup.validate()
+            if (data !== null) {
             // console.log('LoginPage - submit - data: ' + data)
-            authController.signin(data as SigninData)
-          }
+              authController.signin(data as SigninData)
+            }
+          },
+          capture: false,
         },
-        capture: false,
       },
     }
     super('main', props)
 
+    authController.getUser()
+
     store.on(StoreEvents.Updated, () => {
+      console.log('LoginPage - store updated')
       this.setProps(store.getState())
     })
   }
