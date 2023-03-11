@@ -7,6 +7,7 @@ import template from './login.hbs'
 import authController from '../../controllers/authController'
 import { type SigninData } from '../../api/authAPI'
 import store, { StoreEvents } from '../../core/store'
+import Router from '../../core/router'
 
 export default class LoginPage extends Block {
   constructor () {
@@ -20,11 +21,24 @@ export default class LoginPage extends Block {
           new InputGroup('login-page__input-groups', 'password'),
         ],
         button: new Button({ attr: { textContent: 'Авторизоваться' } }),
-        link: new Link({
+        link: new Button({
           attr: {
             class: 'login-page__link',
             textContent: 'Нет аккаунта?',
-            href: 'sign-up',
+            //href: 'sign-up',
+          },
+          href: '/sign-up',
+          events: {
+            click: {
+              handler: (e) => {
+                e.preventDefault()
+                console.log('LoginPage - Link clicked')
+                const router = new Router()
+                router.go('/sign-up')
+                //router.go('/sign-up')
+              },
+              capture: false,
+            },
           },
         }),
       }),
