@@ -74,7 +74,6 @@ export default class InputGroup extends Block {
         events: {
           focus: {
             handler: (e) => {
-              console.log('Input - focus event')
               // Do not validate input on focus event
               // Users won't see red labels after clicking on input
 
@@ -86,7 +85,6 @@ export default class InputGroup extends Block {
           },
           blur: {
             handler: (e) => {
-              console.log('Input - blur event')
               if (e.target != null) {
                 InputGroup.validateInputGroup(e.target)
               }
@@ -110,22 +108,25 @@ export default class InputGroup extends Block {
     return template(this.getPropsAndChildren())
   }*/
 
-  static validate (): boolean {
+  static validate (): object {
+    let isValid = true
     const fields = {}
-    const result = true
     const inputs = document.querySelectorAll('input')
     inputs.forEach((input) => {
-      InputGroup.validateInputGroup(input)
+      if (!InputGroup.validateInputGroup(input)) {
+        console.log('Validate failed')
+        isValid = false
+      }
       fields[input.name] = input.value
     })
-    return result
+    return isValid ? fields : null
   }
 
   static validateInputGroup (input: HTMLInputElement): boolean {
     const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
 
     if (this.validateInput(input)) {
-      console.log('OK, ' + input.name + ': ' + input.value)
+      // console.log('OK, ' + input.name + ': ' + input.value)
       span.style.display = 'none'
       return true
     } else {

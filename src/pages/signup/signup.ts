@@ -4,6 +4,9 @@ import Form from '../../components/form/form'
 import InputGroup from '../../components/inputgroup/inputgroup'
 import Link from '../../components/link/link'
 import template from './signup.hbs'
+import authController from '../../controllers/authController'
+import { type SignupData } from '../api/authAPI'
+import store, { StoreEvents } from '../../core/store'
 
 export default class SignupPage extends Block {
   constructor () {
@@ -28,7 +31,7 @@ export default class SignupPage extends Block {
           attr: {
             class: 'signup-page__link',
             textContent: 'Войти',
-            href: '#login',
+            href: 'login',
           },
         }),
       }),
@@ -40,12 +43,20 @@ export default class SignupPage extends Block {
         handler: (e) => {
           console.log('Signup Form - submit event')
           e.preventDefault()
-          InputGroup.validate()
+          const data = InputGroup.validate()
+          if (data !== null) {
+            // console.log('SignupPage - submit - data: ' + data)
+            authController.signup(data as SignupData)
+          }
         },
         capture: false,
       },
     }
     super('main', props)
+
+    store.on(StoreEvents.Updated, () => {
+      this.setProps(store.getState())
+    })
   }
 
   render (): DocumentFragment {
