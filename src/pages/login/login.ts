@@ -5,7 +5,7 @@ import InputGroup from '../../components/inputgroup/inputgroup'
 import Link from '../../components/link/link'
 import template from './login.hbs'
 import authController from '../../controllers/authController'
-import { type SigninData } from '../api/authAPI'
+import { type SigninData } from '../../api/authAPI'
 import store, { StoreEvents } from '../../core/store'
 
 export default class LoginPage extends Block {
@@ -28,25 +28,27 @@ export default class LoginPage extends Block {
           },
         }),
       }),
-    }
-
-    props.events = {
-      submit: {
-        handler: (e) => {
-          console.log('Login Form - submit event')
-          e.preventDefault()
-          const data = InputGroup.validate()
-          if (data !== null) {
+      events: {
+        submit: {
+          handler: (e: Event) => {
+            console.log('Login Form - submit event')
+            e.preventDefault()
+            const data = InputGroup.validate()
+            if (data !== null) {
             // console.log('LoginPage - submit - data: ' + data)
-            authController.signin(data as SigninData)
-          }
+              authController.signin(data as SigninData)
+            }
+          },
+          capture: false,
         },
-        capture: false,
       },
     }
     super('main', props)
 
+    authController.getUser()
+
     store.on(StoreEvents.Updated, () => {
+      console.log('LoginPage - store updated')
       this.setProps(store.getState())
     })
   }
