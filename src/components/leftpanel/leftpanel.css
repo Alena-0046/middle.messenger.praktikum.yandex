@@ -6,6 +6,7 @@
 
 .left-panel__link {
   align-self: flex-end;
+  background-color: white;
   color: black;
   margin: 1em;
 }
