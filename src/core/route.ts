@@ -22,9 +22,7 @@ export default class Route {
   }
 
   leave (): void {
-    if (this._block != null) {
-      this._block.hide()
-    }
+    this._block = null
   }
 
   match (pathname: string): boolean {
@@ -32,19 +30,14 @@ export default class Route {
   }
 
   render (): void {
-    // console.log('R - render')
     if (this._block == null) {
       // @ts-expect-error
       this._block = new this._blockClass()
 
       const root = document.body
+      root.innerHTML = ''
       // @ts-expect-error
       root.append(this._block.getContent())
-      // root.textContent = block.getContent()
-
-      return
     }
-    // console.log('R - show')
-    this._block.show()
   }
 }
