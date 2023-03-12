@@ -14,7 +14,7 @@ export default class MessagePanel extends Block {
             class: 'right-panel__message',
             textContent: 'If you see this message, old messages were not loaded',
           },
-        })
+        }),
       ],
     }
     super('div', props)
