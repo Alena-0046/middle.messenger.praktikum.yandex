@@ -1,5 +1,5 @@
 @import url("./variables.css");
-@import url("../../src/components/contact/contact.css");
+@import url("../../src/components/chat/chat.css");
 @import url("../../src/components/leftpanel/leftpanel.css");
 @import url("../../src/components/rightpanel/rightpanel.css");
 @import url("../../src/pages/login/login.css");
