@@ -45,7 +45,7 @@ export default class Router {
       return
     }
 
-    if (this._currentRoute != null) {
+    if (this._currentRoute != null && this._currentRoute !== route) {
       this._currentRoute.leave()
     }
 
@@ -60,16 +60,16 @@ export default class Router {
   }
 
   back (): void {
-    if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
-      return
-    }
+    //if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
+    //  return
+    //}
     window.history.back()
   }
 
   forward (): void {
-    if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
-      return
-    }
+    //if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
+    //  return
+    //}
     window.history.forward()
   }
 
