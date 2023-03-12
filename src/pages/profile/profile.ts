@@ -1,15 +1,22 @@
 import Block from '../../core/block'
 import Button from '../../components/button/button'
 import InputGroup from '../../components/inputgroup/inputgroup'
+import Link from '../../components/link/link'
 import template from './profile.hbs'
 import authController from '../../controllers/authController'
-// import { type SignupData } from '../api/authAPI'
-// import store, { StoreEvents } from '../../core/store'
+import store, { StoreEvents } from '../../core/store'
 
 export default class ProfilePage extends Block {
   constructor () {
     const props = {
       attr: { class: 'profile-page' },
+      link: new Link({
+        attr: {
+          class: 'circle',
+          textContent: '<-', // <i class='fa-solid fa-arrow-left'></i>
+        },
+        href: '/messenger',
+      }),
       inputgroups: [
         new InputGroup('profile__input-group', 'email'),
         new InputGroup('profile__input-group', 'login'),
@@ -32,7 +39,7 @@ export default class ProfilePage extends Block {
           },
           events: {
             click: {
-              handler: (e) => {
+              handler: () => {
                 console.log('Profile - ChangeData button clicked')
                 InputGroup.validate()
               },
@@ -51,7 +58,7 @@ export default class ProfilePage extends Block {
           },
           events: {
             click: {
-              handler: (e) => {
+              handler: () => {
                 console.log('Profile - Exit clicked')
                 authController.logout()
               },
@@ -63,7 +70,21 @@ export default class ProfilePage extends Block {
     }
 
     super('main', props)
+
+    // authController.getUser()
+
+    store.on(StoreEvents.Updated, () => {
+      // console.log('Profile - ctor - store updated')
+      this.setProps(store.getState())
+    })
+
+    // authController.getUser()
   }
+
+  /* componentDidUpdate (oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
+    console.log('Profile - didUpdate()')
+    return true
+  }*/
 
   render (): DocumentFragment {
     return this.compile(template, this.props)
