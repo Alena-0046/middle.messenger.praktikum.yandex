@@ -75,17 +75,21 @@ class MessageController {
         content: '0',
         type: 'get old',
       }))
-    } /* else {
-      console.log('MessageController - getOldMessages - socket is null, chatId ' + this.chatId + ', userId = ' + this.userId)
-    }*/
+    }  else {
+      console.log(`MessageController - getOldMessages - socket is null, chatId: ${this.chatId}, userId: ${this.userId}`)
+    }
   }
 
   public sendMessage (message: string): void {
+    //console.log('MessegeController - sendMessage')
     if (this.socket != null) {
       this.socket.send(JSON.stringify({
         content: message,
         type: 'message',
       }))
+      this.getOldMessages()
+    } else {
+      console.log('Socket is null')
     }
   }
 }

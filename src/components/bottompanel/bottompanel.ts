@@ -2,7 +2,7 @@ import Block from '../../core/block'
 import Input from '../../components/input/input'
 import Button from '../../components/button/button'
 import template from './bottompanel.hbs'
-// import messageController from '../../controllers/messageController'
+import messageController from '../../controllers/messageController'
 
 export default class BottomPanel extends Block {
   constructor () {
@@ -28,7 +28,7 @@ export default class BottomPanel extends Block {
               console.log('BottomPanel - Button clicked')
               const input = this.children.input.getContent()
               if (input.value !== '') {
-                // messageController.sendMessage(this.props.activeChat, input.value)
+                messageController.sendMessage(input.value)
                 input.value = ''
               }
             }
