@@ -7,7 +7,7 @@ enum EVENTS {
   FLOW_CDU = 'flow:component-did-update',
   FLOW_RENDER = 'flow:render',
 }
-
+// @ts-expect-error
 export default abstract class Block<Props extends Record<string, any> = unknown> {
   protected id: string
   protected _element: HTMLElement
@@ -17,8 +17,9 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   protected eventBus: EventBus
 
   constructor (tag: string, all: Props) {
+    this.eventBus = new EventBus()
+
     this.id = makeUUID()
-    // console.log('Block - ctor - id: ' + this.id)
     this._meta = { tag, all }
 
     const tempProps = {}
@@ -26,20 +27,17 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     Object.entries(all).forEach(([key, value]) => {
       if (value instanceof Block ||
       (Array.isArray(value) && value.length > 0 && value[0] instanceof Block)) {
+        // @ts-expect-error
         tempChildren[key] = value
       } else {
+        // @ts-expect-error
         tempProps[key] = value
       }
     })
-
+    // @ts-expect-error
     this.props = this._makePropsProxy({ ...tempProps, __id: this.id })
     this.children = tempChildren
 
-    /* const {props, children} = this._getChildrenAndProps()
-    this.props = this._makePropsProxy({...props, __id: this.id})
-    this.children = children*/
-
-    this.eventBus = new EventBus()
     this.registerEvents()
     this.eventBus.emit(EVENTS.INIT)
   }
@@ -69,7 +67,9 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
 
   init (): void {
     const { tag } = this._meta
+    // @ts-expect-error
     this._element = document.createElement(tag)
+    // console.log('INIT - call render')
     this.eventBus.emit(EVENTS.FLOW_RENDER)
   }
 
@@ -87,16 +87,23 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   _componentDidUpdate (oldProps: Props, newProps: Props): void {
     const needRender = this.componentDidUpdate(oldProps, newProps)
     if (needRender) {
-      this._render()
+      // console.log('UPDATE - call render')
+      this.eventBus.emit(EVENTS.FLOW_RENDER)
+      // this._render()
     }
   }
 
   componentDidUpdate (oldProps: Props, newProps: Props): boolean {
+    if (oldProps === newProps) {
+      console.log('oldProps === newProps')
+    }
     return true
   }
 
   _render (): void {
     this._removeEvents()
+    // this._element.replaceWith(this.render())
+    this._element.innerHTML = ''
     this._element.append(this.render())
     // this._element.innerHTML = this.render()
     this._addAttributes()
@@ -115,8 +122,10 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
         for (let i = 0; i < child.length; i++) {
           result += `<div data-id="${child[i].id}">${name}${i}</div>`
         }
+        // @ts-expect-error
         contentAndStubs[name] = result
       } else {
+        // @ts-expect-error
         contentAndStubs[name] = `<div data-id="${child.id}">${name}</div>`
         // console.log('Block - compile() - name: ' + name + ', value: ' + contentAndStubs[name])
       }
@@ -127,7 +136,7 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const temp = document.createElement('template')
     temp.innerHTML = html
 
-    Object.entries(this.children).forEach(([name, child]) => {
+    Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         for (let i = 0; i < child.length; i++) {
           const stub = temp.content.querySelector(`[data-id="${child[i].id}"]`)
@@ -149,8 +158,9 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const { attr = {} } = this.props
     Object.entries(attr).forEach(([key, value]) => {
       if (key === 'class') {
-        this._element.classList.add(value)
+        this._element.classList.add(value as string)
       } else {
+        // @ts-expect-error
         this._element[key] = value
       }
     })
@@ -161,13 +171,20 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   }
 
   private _makePropsProxy (props: Props): Props {
+    const self = this
     return new Proxy(props, {
       get (target: Props, prop: string): unknown {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
       set (target: Props, prop: string, value: unknown): boolean {
+        const oldTarget = { ...target }
+        // @ts-expect-error
         target[prop] = value
+        // console.log('_makePropsProxy - in set: key='+prop+', value='+value)
+        // console.log(target)
+        // this.eventBus.emit(EVENTS.FLOW_CDU)
+        self.eventBus.emit(EVENTS.FLOW_CDU, oldTarget, target)
         return true
       },
       deleteProperty (): boolean {
@@ -178,9 +195,11 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
 
   setProps = (nextProps: Props): void => {
     if (nextProps == null) {
+      // console.log('Block setProps - null')
       return
     }
     Object.assign(this.props, nextProps)
+    // console.log(nextProps)
   }
 
   get element (): HTMLElement {
@@ -191,10 +210,13 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const combined = { ...this.props }
     Object.entries(this.children).forEach(([key, value]) => {
       if (value instanceof Block) {
+        // @ts-expect-error
         combined[key] = value.element.outerHTML
       } else {// value is Block[]
+        // @ts-expect-error
         combined[key] = ''
         value.forEach((child) => {
+          // @ts-expect-error
           combined[key] = (combined[key] as string) + (child.element.outerHTML)
         })
       }
@@ -208,7 +230,10 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   }
 
   show (): void {
-    this.getContent().style.display = 'block'
+    console.log('Block - show ')
+    console.log(this.getContent())
+    this.getContent().style.display = 'flex'
+    console.log(this.getContent())
   }
 
   hide (): void {
@@ -219,6 +244,7 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const { events = {} } = this.props
 
     Object.entries(events).forEach(([key, value]) => {
+      // @ts-expect-error
       this._element.addEventListener(key, value.handler, value.capture)
     })
     /* Object.keys(events).forEach((eventName) => {
@@ -230,15 +256,18 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const { events = {} } = this.props
 
     Object.entries(events).forEach(([key, value]) => {
+      // @ts-expect-error
       this._element.removeEventListener(key, value.handler)
     })
   }
 
-  static renderDOM (query: string, block: Block): Element {
+  static renderDOM (query: string, block: Block): Element | null {
     const root = document.querySelector(query)
 
-    root.append(block.getContent())
-    block.dispatchComponentDidMount()
+    if (root != null) {
+      root.append(block.getContent())
+      block.dispatchComponentDidMount()
+    }
 
     return root
   }

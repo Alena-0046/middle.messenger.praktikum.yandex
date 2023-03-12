@@ -1,31 +1,41 @@
 import BaseAPI from './baseAPI'
 
-export default class ChatAPI extends BaseAPI {
+class ChatAPI extends BaseAPI {
   constructor () {
     super('https://ya-praktikum.tech/api/v2/chats')
   }
 
-  async getChats (offset: number = 0, limit: number = 10, titleToFilter: string = ''): Promise<XMLHTTPRequest> {
+  async getChats (/* offset: number = 0, limit: number = 10, titleToFilter: string = ''*/): Promise<XMLHttpRequest> {
     return await this.http.get('', { data: {}, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async addUsers (chatId: number, userIds: number[]): Promise<XMLHTTPRequest> {
+  async addUsers (chatId: number, userIds: number[]): Promise<XMLHttpRequest> {
     return await this.http.put('/users', { data: { chatId, users: userIds }, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async getUsers (id: number, limit: number = 10, offset: number = 0, nameToFilter: string = '', emailToFilter: string = ''): Promise<XMLHTTPRequest> {
+  async getUsers (id: number/* , limit: number = 10, offset: number = 0, nameToFilter: string = '', emailToFilter: string = ''*/): Promise<XMLHttpRequest> {
     return await this.http.get(`/${id}/users`, { data: {}, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async deleteUsers (chatId: number, userIds: number[]): Promise<XMLHTTPRequest> {
+  async deleteUsers (chatId: number, userIds: number[]): Promise<XMLHttpRequest> {
     return await this.http.delete('/users', { data: { chatId, users: userIds }, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async create (title: string): Promise<XMLHTTPRequest> {
+  /* async getNewMessagesCount(chatId: number): Promise<XMLHttpRequest> {
+    return await this.http.get(`/new/${chatId}`)
+  }*/
+
+  async getToken (chatId: number): Promise<XMLHttpRequest> {
+    return await this.http.post(`/token/${chatId}`)
+  }
+
+  // @ts-expect-error
+  async create (title: string): Promise<XMLHttpRequest> {
     return await this.http.post('/', { data: { title }, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async delete (id: number): Promise<XMLHTTPRequest> {
+  // @ts-expect-error
+  async delete (id: number): Promise<XMLHttpRequest> {
     return await this.http.delete('/', { data: { chatId: id }, headers: { 'Content-Type': 'application/json' } })
   }
 
@@ -33,3 +43,4 @@ export default class ChatAPI extends BaseAPI {
     return chatAPIInstance.get('/full')
   }*/
 }
+export default new ChatAPI()

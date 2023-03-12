@@ -64,15 +64,16 @@ export default class HTTPTransport {
       const xhr = new XMLHttpRequest()
       const isGet: boolean = method === METHOD.GET
 
-      xhr.open(method, isGet && data != null ? url + queryStringify(data) : url)
+      xhr.open(method as string, isGet && data != null ? url + queryStringify(data) : url)
 
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key])
       })
       xhr.withCredentials = true
       xhr.onload = function () {
+        // console.log('HTTPTransport - request - onLoad - ' + xhr.status)
         // console.log('HTTPTransport - request - onLoad - ' + xhr.response)
-        if (xhr.status === 200) {
+        if (xhr.status < 400) {
           resolve(xhr)
         } else {
           reject(xhr)

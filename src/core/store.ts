@@ -1,4 +1,4 @@
-import EventBus from './eventBus.ts'
+import EventBus from './eventBus'
 
 export enum StoreEvents {
   Updated = 'updated',
@@ -34,6 +34,7 @@ function set (object: Indexed | unknown, path: string, value: unknown): Indexed 
   }
 
   if (typeof path !== 'string') {
+    console.log('Store - set - path is not string')
     throw new Error('path must be string')
   }
 
@@ -44,15 +45,26 @@ function set (object: Indexed | unknown, path: string, value: unknown): Indexed 
 }
 
 class Store extends EventBus {
-  private readonly state: Indexed
+  private state: Indexed
+  // public static readonly STORE_NAME: string = 'myAppStore'
 
   constructor () {
     super()
+    // const saveState = localStorage.getItem(Store.STORE_NAME)
+    // this.state = savedState ? (JSON.parce(savedState) ?? {}) : {}
     this.state = {}
+    // this.on(StoreEvents.Update, () => {
+    //  localStorage.setItem(Store.STORE_NAME, JSON.stringify(this.state))
+    // })
   }
 
-  public getState (): object {
+  public getState (): Indexed {
     return this.state
+  }
+
+  public removeState (): void {
+    this.state = {}
+    // this.emit(StoreEvents.Update)
   }
 
   public set (path: string, value: unknown): void {

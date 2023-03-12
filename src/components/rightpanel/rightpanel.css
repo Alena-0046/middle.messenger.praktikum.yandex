@@ -30,6 +30,27 @@
 
 .right-panel__messages {
   flex-grow: 1;
+  flex-direction: column;
+  display: flex;
+}
+
+.right-panel__message {
+  background-color: $background-color;
+  border-radius: 5%;
+  display: flex;
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 50%;
+}
+
+.right-panel__my-message {
+  align-self: flex-end;
+  background-color: $background-color;
+  border-radius: 5%;
+  display: flex;
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 50%;
 }
 
 .right-panel__bottom-panel {

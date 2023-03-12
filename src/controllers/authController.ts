@@ -6,7 +6,7 @@ class AuthController {
   private readonly router: Router
 
   constructor () {
-    this.router = new Router()
+    this.router = new Router('.app')
   }
 
   public logout (): void {
@@ -45,7 +45,8 @@ class AuthController {
         if (error.response === '{"reason":"User already in system"}') {
           this.router.go('/messenger')
         } else {
-          console.log('AuthController - signin - error: ' + JSON.stringify(error.response))
+          console.log('AuthController - signin - error')
+          console.log(error)
         }
       })
   }
@@ -53,13 +54,16 @@ class AuthController {
   public getUser (): void {
     authAPI.getUser()
       .then((xhr) => {
-      // console.log('Get data: ' + JSON.parse(xhr.response))
         store.set('user', JSON.parse(xhr.response))
-      }).catch((error) => {
-        console.log('AuthController - signin - error: ' + JSON.stringify(error.response))
+        // console.log(store.getState().user)
+        console.log('AuthController - getUser - OK')
       })
-    /* this.api.getUser()
-      .then((data) => {store.set('user', data)})*/
+      .catch((error) => {
+        console.log('AuthController - getUser - error ')
+        console.log(error)
+      })
+    // store.set('key', 'value')
+    // console.log(store.getState())
   }
 }
 export default new AuthController()
