@@ -1,6 +1,6 @@
 import BaseAPI from './baseAPI'
 
-export type changePasswordData = {
+export type ChangePasswordData = {
   oldPassword: string
   newPassword: string
 }
@@ -19,23 +19,23 @@ export default class UserAPI extends BaseAPI {
     super('https://ya-praktikum.tech/api/v2/user')
   }
 
-  async changeAvatar (data: FormData): Promise<XMLHTTPRequest> {
+  async changeAvatar (data: FormData): Promise<XMLHttpRequest> {
     return await this.http.put('/profile/avatar', { data })
   }
 
-  async changeProfile (data: ChangeProfileData): Promise<XMLHTTPRequest> {
+  async changeProfile (data: ChangeProfileData): Promise<XMLHttpRequest> {
     return await this.http.put('/profile', { data, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async changePassword (data: ChangePasswordData): Promise<XMLHTTPRequest> {
+  async changePassword (data: ChangePasswordData): Promise<XMLHttpRequest> {
     return await this.http.put('/password', { data, headers: { 'Content-Type': 'application/json' } })
   }
 
-  async getUserById (id: number): Promise<XMLHTTPRequest> {
+  async getUserById (id: number): Promise<XMLHttpRequest> {
     return await this.http.get(`/${id}`)
   }
 
-  async searchUserByLogin (login: string): Promise<XMLHTTPRequest> {
+  async searchUserByLogin (login: string): Promise<XMLHttpRequest> {
     return await this.http.post('/search', { data: { login }, headers: { 'Content-Type': 'application/json' } })
   }
 }

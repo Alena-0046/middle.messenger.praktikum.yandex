@@ -3,6 +3,7 @@ import LeftPanel from '../../components/leftpanel/leftpanel'
 import RightPanel from '../../components/rightpanel/rightpanel'
 import template from './user.hbs'
 import authController from '../../controllers/authController'
+import chatController from '../../controllers/chatController'
 // import { type SigninData } from '../api/authAPI'
 import store, { StoreEvents } from '../../core/store'
 
@@ -15,9 +16,10 @@ export default class UserPage extends Block {
     })
 
     authController.getUser()
+    chatController.getChats()
 
     store.on(StoreEvents.Updated, () => {
-      this.setProps(store.getState())
+       this.setProps(store.getState())
     })
   }
 
