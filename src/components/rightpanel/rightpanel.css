@@ -30,7 +30,7 @@
 
 .right-panel__messages {
   flex-grow: 1;
-  flex-direction: column;
+  flex-direction: column-reverse;
   display: flex;
 }
 
