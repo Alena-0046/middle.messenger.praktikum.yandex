@@ -12,25 +12,7 @@ export default class MessagePanel extends Block {
         new Message({
           attr: {
             class: 'right-panel__message',
-            textContent: 'For example - 1',
-          },
-        }),
-        new Message({
-          attr: {
-            class: 'right-panel__my-message',
-            textContent: 'For example - 2',
-          },
-        }),
-        new Message({
-          attr: {
-            class: 'right-panel__message',
-            textContent: 'For example - 3',
-          },
-        }),
-        new Message({
-          attr: {
-            class: 'right-panel__my-message',
-            textContent: 'For example - 4',
+            textContent: 'If you see this message, old messages were not loaded',
           },
         }),
       ],

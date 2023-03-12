@@ -16,14 +16,14 @@ class MessageController {
       const chatId = store.getState().activeChat
       const user = store.getState().user
 
-      if (user && chatId && (this.chatId !== chatId || this.userId !== user.id)) {
+      if (user != null && chatId != null && (this.chatId !== chatId || this.userId !== user.id)) {
         this.chatId = chatId
         this.userId = user.id
         const url = 'wss://ya-praktikum.tech/ws/chats'
         chatAPI.getToken(chatId)
           .then((xhr) => {
-            const token = JSON.parse(xhr.response).token
-            console.log(`User id: ${this.userId}, chat id: ${this.chatId}, token: ${token}`)
+            const token = JSON.parse(xhr.response).token as string
+            // console.log(`User id: ${this.userId}, chat id: ${this.chatId}, token: ${token}`)
             this.socket = new WebSocket(`${url}/${this.userId}/${this.chatId}/${token}`)
 
             this.socket.addEventListener('open', () => {
@@ -53,7 +53,7 @@ class MessageController {
     })
   }
 
-  private message (data: unknown) {
+  private message (data: unknown): void {
     if (data != null) {
       const parsed = JSON.parse(data)
       if (Array.isArray(parsed)) {
@@ -75,17 +75,21 @@ class MessageController {
         content: '0',
         type: 'get old',
       }))
-    } /* else {
-      console.log('MessageController - getOldMessages - socket is null, chatId ' + this.chatId + ', userId = ' + this.userId)
-    }*/
+    } else {
+      console.log(`MessageController - getOldMessages - socket is null, chatId: ${this.chatId}, userId: ${this.userId}`)
+    }
   }
 
   public sendMessage (message: string): void {
+    // console.log('MessegeController - sendMessage')
     if (this.socket != null) {
       this.socket.send(JSON.stringify({
         content: message,
         type: 'message',
       }))
+      this.getOldMessages()
+    } else {
+      console.log('Socket is null')
     }
   }
 }
