@@ -38,5 +38,36 @@ class ChatController {
         console.log(error)
       })
   }
+  public deleteChat(id: number): void {
+    console.log('chatController - deleteChat')
+    chatAPI.delete(id)
+    .then((xhr) => {
+      console.log(xhr)
+      this.getChats()
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  public addUserToChat(id: number, userId: number) {
+    chatAPI.addUsers(id, [userId])
+    .then((xhr) => {
+      console.log(xhr)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+
+  public deleteUserFromChat(id: number, userId: number) {
+    chatAPI.deleteUsers(id, [userId])
+    .then((xhr) => {
+      console.log(xhr)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
 }
 export default new ChatController()

@@ -1,16 +1,85 @@
 import Block from '../../core/block'
-// import Input from '../../components/input/input'
-// import Button from '../../components/button/button'
+import Input from '../../components/input/input'
+import Button from '../../components/button/button'
 import BottomPanel from '../../components/bottompanel/bottompanel'
 import MessagePanel from '../../components/messagepanel/messagepanel'
 import template from './rightpanel.hbs'
 import store, { StoreEvents } from '../../core/store'
+import chatController from '../../controllers/chatController'
 import messageController from '../../controllers/messageController'
 
 export default class RightPanel extends Block {
   constructor () {
     const props = {
       attr: { class: 'right-panel' },
+      input: new Input({
+        attr: {
+          class: 'right-panel_input',
+          //textContent: 'Название для нового чата',
+          placeholder: "ID пользователя"
+        },
+      }),
+      buttons: [
+      new Button({
+        attr: {
+          class: 'top-panel__button',
+          textContent: 'Добавить' //<i class='fa-solid fa-ellipsis-vertical'></i>
+        },
+        events: {
+          click: {
+            handler: (e) => {
+              console.log('Right Panel - add user')
+              const input = this.children.input.getContent()
+              if (input.value !== '') {
+                const userId = parseInt(input.value)
+                if(userId) {
+                  chatController.addUserToChat(this.props.name, userId)
+                  input.value = ''
+                }
+              }
+            },
+            capture: false,
+          },
+        },
+      }),
+      new Button({
+        attr: {
+          class: 'top-panel__button',
+          textContent: 'Удалить' //<i class='fa-solid fa-ellipsis-vertical'></i>
+        },
+        events: {
+          click: {
+            handler: (e) => {
+              console.log('Right Panel - delete user')
+              const input = this.children.input.getContent()
+              if (input.value !== '') {
+                const userId = parseInt(input.value)
+                if(userId) {
+                  chatController.deleteUserFromChat(this.props.name, userId)
+                  input.value = ''
+                }
+              }
+            },
+            capture: false,
+          },
+        },
+      }),
+      new Button({
+        attr: {
+          //class: 'top-panel__button',
+          textContent: 'Удалить чат' //<i class='fa-solid fa-ellipsis-vertical'></i>
+        },
+        events: {
+          click: {
+            handler: (e) => {
+              console.log('Right Panel - delete chat')
+              chatController.deleteChat(this.props.name)
+            },
+            capture: false,
+          },
+        },
+      }),
+      ],
       messagepanel: new MessagePanel(),
       bottompanel: new BottomPanel(),
     }
@@ -18,7 +87,7 @@ export default class RightPanel extends Block {
     store.on(StoreEvents.Updated, () => {
       const activeChat = store.getState().activeChat
       if(activeChat != null) {
-        this.setProps({name: "Чат: " + activeChat})
+        this.setProps({name: activeChat})
         this.show()
       } else {
         console.log('ACTIVE CHAT IS NULL')
