@@ -19,6 +19,11 @@
   row-gap: 2em;
 }
 
+.profile__avatar {
+  background-color: $background-color;
+  height: 150px;
+}
+
 .profile__avatar-container {
   text-align: center;
   width: 150px;
