@@ -14,8 +14,8 @@ export default class LeftPanel extends Block {
       input: new Input({
         attr: {
           class: 'left-panel_input',
-          //textContent: 'Название для нового чата',
-          placeholder: "Название для нового чата"
+          // textContent: 'Название для нового чата',
+          placeholder: 'Название для нового чата',
         },
       }),
       button: new Button({
@@ -53,7 +53,7 @@ export default class LeftPanel extends Block {
     store.on(StoreEvents.Updated, () => {
       const chats = store.getState().chats
       if (chats != null) {
-        console.log('LeftPanel - GOT CHATS, length = ' + chats.length)
+        // console.log('LeftPanel - GOT CHATS, length = ' + chats.length)
         const children: Chat[] = []
 
         chats.forEach((chat) => {
@@ -70,7 +70,7 @@ export default class LeftPanel extends Block {
             message = chat.last_message.content
           }
 
-          //console.log(chat)
+          // console.log(chat)
           children.push(new Chat({
             attr: {
               class: 'chat',
@@ -83,7 +83,7 @@ export default class LeftPanel extends Block {
           }))
         })
         this.children.chats = children
-        this.setProps({chats: children})
+        this.setProps({ chats: children })
       }
     })
   }

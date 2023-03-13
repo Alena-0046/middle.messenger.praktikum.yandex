@@ -11,7 +11,7 @@ export default class Link extends Block {
           handler: (e) => {
             e.preventDefault()
             console.log('Link clicked')
-            if (this.props.href) {
+            if (this.props.href != null) {
               this.router.go(this.props.href)
             }
           },

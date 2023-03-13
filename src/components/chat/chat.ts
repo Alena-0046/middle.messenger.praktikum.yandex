@@ -1,15 +1,15 @@
 import Block from '../../core/block'
 import template from './chat.hbs'
-import store, { StoreEvents } from '../../core/store'
-import messageController from '../../controllers/messageController'
+import store from '../../core/store'
 
 export default class Chat extends Block {
   constructor (props: Record<string, unknown>) {
-    props = {...props,
+    props = {
+      ...props,
       events: {
         click: {
           handler: (e) => {
-            if(this.props.id != null && this.props.id != store.getState().activeChat) {
+            if (this.props.id != null && this.props.id !== store.getState().activeChat) {
               store.set('activeChat', this.props.id)
             }
           },

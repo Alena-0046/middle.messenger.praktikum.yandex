@@ -14,7 +14,7 @@ export type ChangeProfileData = {
   phone: string
 }
 
-export default class UserAPI extends BaseAPI {
+class UserAPI extends BaseAPI {
   constructor () {
     super('https://ya-praktikum.tech/api/v2/user')
   }
@@ -39,3 +39,4 @@ export default class UserAPI extends BaseAPI {
     return await this.http.post('/search', { data: { login }, headers: { 'Content-Type': 'application/json' } })
   }
 }
+export default new UserAPI()

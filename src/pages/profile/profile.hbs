@@ -1,14 +1,21 @@
 <div class='profile-page__button-panel'>
   {{{link}}}
 </div>
+
 <div class='profile-page__profile'>
   <div class='profile__avatar-container'>
-    {{#if avatar}}
-    <img class="profile__avatar" src="https://ya-praktikum.tech/api/v2/resources/{{avatar}}">
+    {{#if ava}}
+    <img class="profile__avatar" src="https://ya-praktikum.tech/api/v2/resources/{{ava}}">
     {{else}}
     <div class='avatar-container__avatar circle'></div>
     {{/if}}
-    <h2>{{name}}</h2>
+    {{#if user_name}}
+    <h2>{{user_name}}</h2>
+    {{/if}}
+  </div>
+  <div>
+    {{{input}}}
+    {{{button}}}
   </div>
   <div class='profile__inputs'>
     {{{inputgroups}}}
