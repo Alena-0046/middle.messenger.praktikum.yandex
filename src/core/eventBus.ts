@@ -1,5 +1,5 @@
 export default class EventBus {
-  listeners: any // Record<string, Function[]>
+  listeners: Record<string, Function[]>
 
   constructor () {
     this.listeners = {}
@@ -22,6 +22,7 @@ export default class EventBus {
 
   emit (event: string, ...args: unknown[]): void {
     if (this.listeners[event] == null) {
+      console.log('EventBus - emit - No handler for event')
       throw new Error(`Нет события: ${event}`)
     }
 

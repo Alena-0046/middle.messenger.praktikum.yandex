@@ -1,4 +1,4 @@
-.contact {
+.chat {
   display: grid;
   grid-template-areas:
     "photo name time"
@@ -7,32 +7,33 @@
   padding: 1em;
 }
 
-.contact:hover {
+.chat:hover {
   background-color: $background-color;
 }
 
-.contact__photo {
+.chat__photo {
   background-color: $background-color;
   grid-area: photo;
   width: 4em;
 }
 
-.contact__name {
+.chat__name {
   align-self: start;
   grid-area: name;
 }
 
-.contact__message-time {
+.chat__message-time {
   align-self: start;
+  justify-self: end;
   grid-area: time;
 }
 
-.contact__message-text {
+.chat__message-text {
   align-self: start;
   grid-area: text;
 }
 
-.contact__message-count {
+.chat__message-count {
   align-self: end;
   background-color: $main-color;
   color: white;

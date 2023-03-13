@@ -6,7 +6,7 @@ export default class Form extends Block {
     super('form', props)
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }
