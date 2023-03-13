@@ -4,6 +4,8 @@ import Block from '../../core/block'
 import BottomPanel from '../../components/bottompanel/bottompanel'
 import MessagePanel from '../../components/messagepanel/messagepanel'
 import template from './rightpanel.hbs'
+import store, { StoreEvents } from '../../core/store'
+import messageController from '../../controllers/messageController'
 
 export default class RightPanel extends Block {
   constructor () {
@@ -13,6 +15,19 @@ export default class RightPanel extends Block {
       bottompanel: new BottomPanel(),
     }
     super('div', props)
+    store.on(StoreEvents.Updated, () => {
+      const activeChat = store.getState().activeChat
+      if(activeChat != null) {
+        this.show()
+      } else {
+        console.log('ACTIVE CHAT IS NULL')
+        this.hide()
+      }
+    })
+  }
+  init() {
+    super.init()
+    this.hide()
   }
 
   render (): DocumentFragment {

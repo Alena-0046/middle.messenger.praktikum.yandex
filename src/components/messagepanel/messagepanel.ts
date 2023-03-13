@@ -8,14 +8,7 @@ export default class MessagePanel extends Block {
   constructor () {
     const props = {
       attr: { class: 'right-panel__messages' },
-      messages: [
-        new Message({
-          attr: {
-            class: 'right-panel__message',
-            textContent: 'If you see this message, old messages were not loaded',
-          },
-        }),
-      ],
+      messages: [],
     }
     super('div', props)
     store.on(StoreEvents.Updated, () => {
@@ -23,7 +16,7 @@ export default class MessagePanel extends Block {
       if (messages != null) {
         const children: Message[] = []
         messages.forEach((message) => {
-          // console.log(message) // id, user_id, chat, type, time, content, is_read, file
+          //console.log(message) // id, user_id, chat, type, time, content, is_read, file
           children.push(new Message({
             attr: {
               class: (store.getState().user.id === message.user_id) ? 'right-panel__my-message' : 'right-panel__message',
@@ -32,20 +25,14 @@ export default class MessagePanel extends Block {
           }))
         })
         this.children.messages = children
-        this.setProps(messages)
+        this.setProps({messages: children})
       } else {
         messageController.getOldMessages()
       }
     })
-    // messageController.getOldMessages()
   }
 
-  // setProps() {
-
-  // }
-
   render (): DocumentFragment {
-    console.log('Messenger - render')
     return this.compile(template, this.props)
   }
 }

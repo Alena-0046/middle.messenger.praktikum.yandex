@@ -4,6 +4,13 @@
   width: 25%;
 }
 
+.left-panel__button {
+  align-self: center;
+  padding: 1em;
+  margin: 1em;
+}
+
+
 .left-panel__link {
   align-self: flex-end;
   background-color: white;

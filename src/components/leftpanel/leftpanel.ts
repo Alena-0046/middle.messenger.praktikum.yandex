@@ -1,13 +1,29 @@
 import Block from '../../core/block'
 import Chat from '../../components/chat/chat'
+import Button from '../../components/button/button'
+import Input from '../../components/input/input'
 import Link from '../../components/link/link'
 import template from './leftpanel.hbs'
 import store, { StoreEvents } from '../../core/store'
+import chatController from '../../controllers/chatController'
 
 export default class LeftPanel extends Block {
   constructor () {
     const props = {
       attr: { class: 'left-panel' },
+      input: new Input({
+        attr: {
+          class: 'left-panel_input',
+          //textContent: 'Название для нового чата',
+          placeholder: "Название для нового чата"
+        },
+      }),
+      button: new Button({
+        attr: {
+          class: 'left-panel__button',
+          textContent: 'Создать чат',
+        },
+      }),
       link: new Link({
         attr: {
           class: 'left-panel__link',
@@ -16,12 +32,28 @@ export default class LeftPanel extends Block {
         href: '/settings',
       }),
       chats: [],
+      events: {
+        click: {
+          handler: (e) => {
+            if (e.target instanceof HTMLButtonElement) {
+              e.preventDefault()
+              console.log('LeftPanel - Button clicked')
+              const input = this.children.input.getContent()
+              if (input.value !== '') {
+                chatController.createChat(input.value)
+                input.value = ''
+              }
+            }
+          },
+          capture: false,
+        },
+      },
     }
     super('div', props)
     store.on(StoreEvents.Updated, () => {
       const chats = store.getState().chats
       if (chats != null) {
-        console.log('LeftPanel - GOT CHATS')
+        //console.log('LeftPanel - GOT CHATS')
         const children: Chat[] = []
 
         chats.forEach((chat) => {
@@ -38,7 +70,7 @@ export default class LeftPanel extends Block {
             message = chat.last_message.content
           }
 
-          console.log(chat)
+          //console.log(chat)
           children.push(new Chat({
             attr: {
               class: 'chat',
