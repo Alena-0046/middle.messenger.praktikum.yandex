@@ -56,6 +56,7 @@ export default class ProfilePage extends Block {
         new InputGroup('profile__input-group', 'nick'),
         new InputGroup('profile__input-group', 'second_name'),
         new InputGroup('profile__input-group', 'phone'),
+        new InputGroup('profile__input-group', 'old_password'),
         new InputGroup('profile__input-group', 'password'),
         new InputGroup('profile__input-group', 'password_repeat'),
       ],
@@ -69,7 +70,21 @@ export default class ProfilePage extends Block {
             click: {
               handler: () => {
                 console.log('Profile - ChangeData button clicked')
-                InputGroup.validate()
+                let isValid = true
+                const fields = {}
+                const inputs = document.querySelectorAll('input')
+                inputs.forEach((input) => {
+                  if(input.type !== 'file' && input.type !== 'password') {
+                    if(InputGroup.validateInputGroup(input)) {
+                      fields[input.name] = input.value
+                    } else {
+                      isValid = false
+                    }
+                  }
+                })
+                if(isValid) {
+                  userController.changeProfile(fields)
+                }
               },
               capture: false,
             },
@@ -80,6 +95,29 @@ export default class ProfilePage extends Block {
             class: 'buttons__change-password',
             textContent: 'Изменить пароль',
           },
+          events: {
+            click: {
+              handler: () => {
+                const oldPassword = document.getElementsByName('oldPassword')[0]
+                const newPassword = document.getElementsByName('password')[0]
+                const repeatPassword = document.getElementsByName('newPassword')[0].value
+
+                if(InputGroup.validateInputGroup(oldPassword) && InputGroup.validateInputGroup(newPassword)) {
+                  if(oldPassword.value === newPassword.value) {
+                    console.log('Profile - change password - old === new')
+                  } else if (newPassword.value !== repeatPassword) {
+                    console.log('Profile - change password - password !== repeatPassword')
+                  } else {
+                    userController.changePassword({
+                      oldPassword: oldPassword.value,
+                      newPassword: newPassword.value
+                    })
+                  }
+                }
+              },
+              capture: false
+            }
+          }
         }),
         new Button({
           attr: {
