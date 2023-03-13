@@ -18,6 +18,7 @@ export default class RightPanel extends Block {
     store.on(StoreEvents.Updated, () => {
       const activeChat = store.getState().activeChat
       if(activeChat != null) {
+        this.setProps({name: "Чат: " + activeChat})
         this.show()
       } else {
         console.log('ACTIVE CHAT IS NULL')
