@@ -53,7 +53,7 @@ export default class LeftPanel extends Block {
     store.on(StoreEvents.Updated, () => {
       const chats = store.getState().chats
       if (chats != null) {
-        //console.log('LeftPanel - GOT CHATS')
+        console.log('LeftPanel - GOT CHATS, length = ' + chats.length)
         const children: Chat[] = []
 
         chats.forEach((chat) => {
@@ -83,7 +83,7 @@ export default class LeftPanel extends Block {
           }))
         })
         this.children.chats = children
-        this.setProps(children)
+        this.setProps({chats: children})
       }
     })
   }

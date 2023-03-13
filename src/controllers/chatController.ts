@@ -6,20 +6,14 @@ class ChatController {
     chatAPI.getChats()
       .then((xhr) => {
         const chats = JSON.parse(xhr.response)
-        console.log('Get chats')
-        if (chats != null && chats.length > 0) {
-          if(store.getState().activeChat === null) {
+        //console.log('Get chats')
+        if (chats != null) {
+          console.log('Get chats ' + chats.length)
+          if(chats.length > 0 && store.getState().activeChat === null) {
             store.set('activeChat', chats[0].id)
+          } else if (chats.length === 0){
+            store.set('activeChat', null)
           }
-
-          /* chatAPI.getToken(id)
-              .then((xhr) => {
-                store.set('token', JSON.parse(xhr.response).token)
-              })
-              .catch((error) => {
-                console.log(error)
-              })*/
-
           store.set('chats', chats)
           console.log('OK')
         }
