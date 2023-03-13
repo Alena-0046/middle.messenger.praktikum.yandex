@@ -52,6 +52,7 @@ export default class LeftPanel extends Block {
     super('div', props)
     store.on(StoreEvents.Updated, () => {
       const chats = store.getState().chats
+      const activeChat = store.getState().activeChat
       if (chats != null) {
         // console.log('LeftPanel - GOT CHATS, length = ' + chats.length)
         const children: Chat[] = []
@@ -74,9 +75,10 @@ export default class LeftPanel extends Block {
           children.push(new Chat({
             attr: {
               class: 'chat',
+              //style: { backgroundColor: (chat.id === activeChat ? 'lightgrey' : 'white') }
             },
             id: chat.id,
-            name,
+            name: name,
             message_time: time,
             message_text: message,
             message_count: chat.unread_count,
