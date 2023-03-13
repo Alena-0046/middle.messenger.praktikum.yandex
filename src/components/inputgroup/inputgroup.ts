@@ -21,7 +21,7 @@ export default class InputGroup extends Block {
       },
       nick: {
         text: 'Имя в чатах',
-        name: 'name',
+        name: 'display_name',
         type: 'text',
         span: 'от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)',
       },
@@ -63,17 +63,20 @@ export default class InputGroup extends Block {
       label: new Label({
         attr: {
           class: 'signup-page__label',
+
           textContent: inputData[type].text,
         },
       }),
       input: new Input({
         attr: {
+
           name: inputData[type].name,
+
           type: inputData[type].type,
         },
         events: {
           focus: {
-            handler: (e) => {
+            handler: () => {
               // Do not validate input on focus event
               // Users won't see red labels after clicking on input
 
@@ -84,8 +87,9 @@ export default class InputGroup extends Block {
             capture: true,
           },
           blur: {
-            handler: (e) => {
+            handler: (e: Event) => {
               if (e.target != null) {
+                // @ts-expect-error
                 InputGroup.validateInputGroup(e.target)
               }
             },
@@ -93,6 +97,7 @@ export default class InputGroup extends Block {
           },
         },
       }),
+
       span: new Span({ attr: { textContent: inputData[type].span } }),
     }
 
@@ -100,15 +105,12 @@ export default class InputGroup extends Block {
   }
 
   render (): DocumentFragment {
+
     this.children.span.hide()
     return this.compile(template, this.props)
   }
-  /* render (): string {
-    this.children.span.hide()
-    return template(this.getPropsAndChildren())
-  }*/
 
-  static validate (): object {
+  static validate (): object | null {
     let isValid = true
     const fields = {}
     const inputs = document.querySelectorAll('input')
@@ -117,12 +119,14 @@ export default class InputGroup extends Block {
         console.log('Validate failed')
         isValid = false
       }
+
       fields[input.name] = input.value
     })
     return isValid ? fields : null
   }
 
   static validateInputGroup (input: HTMLInputElement): boolean {
+
     const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
 
     if (this.validateInput(input)) {
