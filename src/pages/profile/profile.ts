@@ -71,7 +71,7 @@ export default class ProfilePage extends Block {
 
     super('main', props)
 
-    // authController.getUser()
+    authController.getUser()
 
     store.on(StoreEvents.Updated, () => {
       // console.log('Profile - ctor - store updated')
