@@ -39,6 +39,7 @@ class ChatController {
     chatAPI.delete(id)
       .then((xhr) => {
         console.log(xhr)
+        store.set('activeChat', null)
         this.getChats()
       })
       .catch((error) => {
