@@ -1,4 +1,4 @@
-import userAPI from '../api/userAPI'
+import userAPI, {ChangeProfileData, ChangePasswordData} from '../api/userAPI'
 import store from '../core/store'
 
 class UserController {
@@ -8,6 +8,28 @@ class UserController {
       .then((xhr) => {
         const parsed = JSON.parse(xhr.response)
         store.set('user', parsed)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  public changePassword(data: ChangePasswordData) {
+    console.log('UserController - change password')
+    userAPI.changePassword(data)
+      .then((xhr) => {
+        console.log('OK')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  public changeProfile(data: ChangeProfileData) {
+    console.log('UserController - change profile')
+    userAPI.changeProfile(data)
+      .then((xhr) => {
+        console.log('OK')
       })
       .catch((error) => {
         console.log(error)
