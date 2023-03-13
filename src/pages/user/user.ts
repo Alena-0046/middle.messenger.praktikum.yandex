@@ -19,7 +19,7 @@ export default class UserPage extends Block {
     chatController.getChats()
 
     store.on(StoreEvents.Updated, () => {
-       this.setProps(store.getState())
+      this.setProps(store.getState())
     })
   }
 
