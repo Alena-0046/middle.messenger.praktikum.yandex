@@ -74,8 +74,10 @@ export default class ProfilePage extends Block {
     authController.getUser()
 
     store.on(StoreEvents.Updated, () => {
-      // console.log('Profile - ctor - store updated')
-      this.setProps(store.getState())
+      const user = store.getState().user
+      if(user != null) {
+        this.setProps({avatar: user.avatar})
+      }
     })
 
     // authController.getUser()
