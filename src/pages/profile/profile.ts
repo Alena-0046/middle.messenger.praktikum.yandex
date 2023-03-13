@@ -41,7 +41,7 @@ export default class ProfilePage extends Block {
                 const data = new FormData()
                 data.append('avatar', file)
                 userController.changeAvatar(data)
-                authController.getUser()
+                input.value = null
               }
             },
             capture: false,

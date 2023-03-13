@@ -43,6 +43,12 @@ export default class InputGroup extends Block {
         type: 'tel',
         span: 'от 10 до 15 символов, состоит из цифр, может начинается с плюса',
       },
+      old_password: {
+        text: 'Старый пароль',
+        name: 'oldPassword',
+        type: 'password',
+        span: 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+      },
       password: {
         text: 'Пароль',
         name: 'password',
@@ -51,9 +57,9 @@ export default class InputGroup extends Block {
       },
       password_repeat: {
         text: 'Пароль (ещё раз)',
-        name: 'password',
+        name: 'newPassword',
         type: 'password',
-        span: 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+        span: 'пароли не совпали',
       },
     }
 
@@ -162,6 +168,7 @@ export default class InputGroup extends Block {
       case 'email':
         result = email.test(input.value)
         break
+      case 'oldPassword':
       case 'password':
         result = password.test(input.value)
         break
