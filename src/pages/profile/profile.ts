@@ -1,15 +1,18 @@
 import Block from '../../core/block'
 import Button from '../../components/button/button'
+import Input from '../../components/input/input'
 import InputGroup from '../../components/inputgroup/inputgroup'
 import Link from '../../components/link/link'
 import template from './profile.hbs'
 import authController from '../../controllers/authController'
+import userController from '../../controllers/userController'
 import store, { StoreEvents } from '../../core/store'
 
 export default class ProfilePage extends Block {
   constructor () {
     const props = {
       attr: { class: 'profile-page' },
+
       link: new Link({
         attr: {
           class: 'circle',
@@ -17,6 +20,35 @@ export default class ProfilePage extends Block {
         },
         href: '/messenger',
       }),
+
+      input: new Input({
+        attr: {
+          id: 'profile__avatar-input',
+          type: 'file',
+        },
+      }),
+
+      button: new Button({
+        attr: {
+          textContent: 'Изменить аватар',
+        },
+        events: {
+          click: {
+            handler: () => {
+              const input = document.getElementById('profile__avatar-input')
+              if (input != null && input.files.length > 0) {
+                const file = input.files[0]
+                const data = new FormData()
+                data.append('avatar', file)
+                userController.changeAvatar(data)
+                authController.getUser()
+              }
+            },
+            capture: false,
+          },
+        },
+      }),
+
       inputgroups: [
         new InputGroup('profile__input-group', 'email'),
         new InputGroup('profile__input-group', 'login'),
@@ -27,11 +59,7 @@ export default class ProfilePage extends Block {
         new InputGroup('profile__input-group', 'password'),
         new InputGroup('profile__input-group', 'password_repeat'),
       ],
-      buttons: [/*
-         new Button({
-          attr: { class: 'save_button' },
-          text: 'Сохранить',
-        }),*/
+      buttons: [
         new Button({
           attr: {
             class: 'buttons__change-data-button',
@@ -46,11 +74,13 @@ export default class ProfilePage extends Block {
               capture: false,
             },
           },
-        }), /*
+        }),
         new Button({
-          attr: { class: 'buttons__change-password' },
-          text: 'Изменить пароль',
-        }),*/
+          attr: {
+            class: 'buttons__change-password',
+            textContent: 'Изменить пароль',
+          },
+        }),
         new Button({
           attr: {
             class: 'buttons__exit-button',
@@ -75,18 +105,11 @@ export default class ProfilePage extends Block {
 
     store.on(StoreEvents.Updated, () => {
       const user = store.getState().user
-      if(user != null) {
-        this.setProps({avatar: user.avatar})
+      if (user != null) {
+        this.setProps({ ava: user.avatar })
       }
     })
-
-    // authController.getUser()
   }
-
-  /* componentDidUpdate (oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
-    console.log('Profile - didUpdate()')
-    return true
-  }*/
 
   render (): DocumentFragment {
     return this.compile(template, this.props)

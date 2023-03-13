@@ -16,7 +16,7 @@ export default class MessagePanel extends Block {
       if (messages != null) {
         const children: Message[] = []
         messages.forEach((message) => {
-          //console.log(message) // id, user_id, chat, type, time, content, is_read, file
+          // console.log(message) // id, user_id, chat, type, time, content, is_read, file
           children.push(new Message({
             attr: {
               class: (store.getState().user.id === message.user_id) ? 'right-panel__my-message' : 'right-panel__message',
@@ -25,7 +25,7 @@ export default class MessagePanel extends Block {
           }))
         })
         this.children.messages = children
-        this.setProps({messages: children})
+        this.setProps({ messages: children })
       } else {
         messageController.getOldMessages()
       }

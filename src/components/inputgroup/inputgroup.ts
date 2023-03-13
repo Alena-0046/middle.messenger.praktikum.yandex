@@ -105,7 +105,6 @@ export default class InputGroup extends Block {
   }
 
   render (): DocumentFragment {
-
     this.children.span.hide()
     return this.compile(template, this.props)
   }
@@ -126,7 +125,6 @@ export default class InputGroup extends Block {
   }
 
   static validateInputGroup (input: HTMLInputElement): boolean {
-
     const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
 
     if (this.validateInput(input)) {

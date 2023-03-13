@@ -6,12 +6,14 @@ export default class Input extends Block {
     super('input', props)
     store.on(StoreEvents.Updated, () => {
       const user = store.getState().user
-      if(user != null) {
+      if (user != null) {
         Object.entries(user).forEach(([key, value]) => {
-          if(this.getContent().name === key) {
-            this.setProps({attr: {
-              value: value,
-            }})
+          if (this.getContent().name === key) {
+            this.setProps({
+              attr: {
+                value,
+              },
+            })
           }
         })
       }
