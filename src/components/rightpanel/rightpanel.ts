@@ -25,15 +25,18 @@ export default class RightPanel extends Block {
           },
           events: {
             click: {
-              handler: (e) => {
+              handler: () => {
                 console.log('Right Panel - add user')
-                const input = this.children.input.getContent()
+                if(!Array.isArray(this.children.input)){
+                const input = this.children.input.getContent() as HTMLInputElement
                 if (input.value !== '') {
                   const userId = parseInt(input.value)
                   if (!isNaN(userId)) {
+                    // @ts-expect-error
                     chatController.addUserToChat(this.props.name, userId)
                     input.value = ''
                   }
+                }
                 }
               },
               capture: false,
@@ -47,15 +50,18 @@ export default class RightPanel extends Block {
           },
           events: {
             click: {
-              handler: (e) => {
+              handler: () => {
                 console.log('Right Panel - delete user')
-                const input = this.children.input.getContent()
+                if(!Array.isArray(this.children.input)) {
+                const input = this.children.input.getContent() as HTMLInputElement
                 if (input.value !== '') {
                   const userId = parseInt(input.value)
                   if (!isNaN(userId)) {
+                    // @ts-expect-error
                     chatController.deleteUserFromChat(this.props.name, userId)
                     input.value = ''
                   }
+                }
                 }
               },
               capture: false,
@@ -69,8 +75,9 @@ export default class RightPanel extends Block {
           },
           events: {
             click: {
-              handler: (e) => {
+              handler: () => {
                 console.log('Right Panel - delete chat')
+                // @ts-expect-error
                 chatController.deleteChat(this.props.name)
               },
               capture: false,

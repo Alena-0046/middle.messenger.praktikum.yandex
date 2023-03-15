@@ -60,16 +60,16 @@ export default class Router {
   }
 
   back (): void {
-    //if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
+    // if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
     //  return
-    //}
+    // }
     window.history.back()
   }
 
   forward (): void {
-    //if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
+    // if (this.routes == null || this.routes.length < 2 || this._currentRoute == null) {
     //  return
-    //}
+    // }
     window.history.forward()
   }
 

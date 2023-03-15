@@ -231,12 +231,13 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
 
   show (): void {
     console.log('Block - show ')
-    console.log(this.getContent())
+    // console.log(this.getContent())
     this.getContent().style.display = 'flex'
-    console.log(this.getContent())
+    // console.log(this.getContent())
   }
 
   hide (): void {
+    console.log('BLOCK -_ HIDE')
     this.getContent().style.display = 'none'
   }
 

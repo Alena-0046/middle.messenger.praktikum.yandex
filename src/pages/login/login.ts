@@ -35,7 +35,10 @@ export default class LoginPage extends Block {
             e.preventDefault()
             const data = InputGroup.validate()
             if (data !== null) {
-            // console.log('LoginPage - submit - data: ' + data)
+              // const user = store.getState().user
+              // if (user != null && user.login !== data.login) {
+              //   authController.logout()
+              // }
               authController.signin(data as SigninData)
             }
           },

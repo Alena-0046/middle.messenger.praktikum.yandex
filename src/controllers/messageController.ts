@@ -1,16 +1,16 @@
 import chatAPI from '../api/chatAPI'
-import Router from '../core/router'
+//import Router from '../core/router'
 import store, { StoreEvents } from '../core/store'
 
 class MessageController {
-  private readonly router: Router
+  //private readonly router: Router
   private chatId: number
   private userId: number
   private socket: WebSocket | null
   // private messagesCount: number
 
   constructor () {
-    this.router = new Router('.app')
+    //this.router = new Router('.app')
     this.socket = null
     store.on(StoreEvents.Updated, () => {
       const chatId = store.getState().activeChat
@@ -43,7 +43,7 @@ class MessageController {
               // console.log(Array.isArray(event.data))
             })
             this.socket.addEventListener('error', (event) => {
-              console.log('Ошибка', event.message)
+              console.log(event)
             })
           })
           .catch((error) => {
@@ -55,6 +55,7 @@ class MessageController {
 
   private message (data: unknown): void {
     if (data != null) {
+      // @ts-expect-error
       const parsed = JSON.parse(data)
       if (Array.isArray(parsed)) {
         // console.log('MessageController - message - got old messages for chat')

@@ -22,14 +22,16 @@ export default class BottomPanel extends Block {
       }),
       events: {
         click: {
-          handler: (e) => {
+          handler: (e: Event) => {
             if (e.target instanceof HTMLButtonElement) {
               e.preventDefault()
               console.log('BottomPanel - Button clicked')
-              const input = this.children.input.getContent()
+              if(!Array.isArray(this.children.input)){
+              const input = this.children.input.getContent() as HTMLInputElement
               if (input.value !== '') {
                 messageController.sendMessage(input.value)
                 input.value = ''
+              }
               }
             }
           },

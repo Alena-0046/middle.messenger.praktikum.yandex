@@ -34,15 +34,17 @@ export default class LeftPanel extends Block {
       chats: [],
       events: {
         click: {
-          handler: (e) => {
+          handler: (e: Event) => {
             if (e.target instanceof HTMLButtonElement) {
               e.preventDefault()
               console.log('LeftPanel - Button clicked')
-              const input = this.children.input.getContent()
+              if(!Array.isArray(this.children.input)){
+              const input = this.children.input.getContent() as HTMLInputElement
               if (input.value !== '') {
                 chatController.createChat(input.value)
                 input.value = ''
               }
+            }
             }
           },
           capture: false,
@@ -52,11 +54,10 @@ export default class LeftPanel extends Block {
     super('div', props)
     store.on(StoreEvents.Updated, () => {
       const chats = store.getState().chats
-      const activeChat = store.getState().activeChat
       if (chats != null) {
-        // console.log('LeftPanel - GOT CHATS, length = ' + chats.length)
+        
         const children: Chat[] = []
-
+        // @ts-expect-error
         chats.forEach((chat) => {
           let name = chat.title
           let time = ''
