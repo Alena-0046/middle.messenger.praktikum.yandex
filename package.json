@@ -61,11 +61,6 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run stylelint && npm run eslint"
-    }
-  },
   "targets": {
     "modern": {
       "engines": {
