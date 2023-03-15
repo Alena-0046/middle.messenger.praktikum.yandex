@@ -111,7 +111,7 @@ export default class InputGroup extends Block {
   }
 
   render (): DocumentFragment {
-    if(!Array.isArray(this.children.span)) {
+    if (!Array.isArray(this.children.span)) {
       this.children.span.hide()
     }
     return this.compile(template, this.props)

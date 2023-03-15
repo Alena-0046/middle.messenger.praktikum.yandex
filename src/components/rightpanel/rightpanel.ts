@@ -27,16 +27,16 @@ export default class RightPanel extends Block {
             click: {
               handler: () => {
                 console.log('Right Panel - add user')
-                if(!Array.isArray(this.children.input)){
-                const input = this.children.input.getContent() as HTMLInputElement
-                if (input.value !== '') {
-                  const userId = parseInt(input.value)
-                  if (!isNaN(userId)) {
+                if (!Array.isArray(this.children.input)) {
+                  const input = this.children.input.getContent() as HTMLInputElement
+                  if (input.value !== '') {
+                    const userId = parseInt(input.value)
+                    if (!isNaN(userId)) {
                     // @ts-expect-error
-                    chatController.addUserToChat(this.props.name, userId)
-                    input.value = ''
+                      chatController.addUserToChat(this.props.name, userId)
+                      input.value = ''
+                    }
                   }
-                }
                 }
               },
               capture: false,
@@ -52,16 +52,16 @@ export default class RightPanel extends Block {
             click: {
               handler: () => {
                 console.log('Right Panel - delete user')
-                if(!Array.isArray(this.children.input)) {
-                const input = this.children.input.getContent() as HTMLInputElement
-                if (input.value !== '') {
-                  const userId = parseInt(input.value)
-                  if (!isNaN(userId)) {
+                if (!Array.isArray(this.children.input)) {
+                  const input = this.children.input.getContent() as HTMLInputElement
+                  if (input.value !== '') {
+                    const userId = parseInt(input.value)
+                    if (!isNaN(userId)) {
                     // @ts-expect-error
-                    chatController.deleteUserFromChat(this.props.name, userId)
-                    input.value = ''
+                      chatController.deleteUserFromChat(this.props.name, userId)
+                      input.value = ''
+                    }
                   }
-                }
                 }
               },
               capture: false,

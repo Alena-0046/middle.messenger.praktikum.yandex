@@ -38,13 +38,13 @@ export default class LeftPanel extends Block {
             if (e.target instanceof HTMLButtonElement) {
               e.preventDefault()
               console.log('LeftPanel - Button clicked')
-              if(!Array.isArray(this.children.input)){
-              const input = this.children.input.getContent() as HTMLInputElement
-              if (input.value !== '') {
-                chatController.createChat(input.value)
-                input.value = ''
+              if (!Array.isArray(this.children.input)) {
+                const input = this.children.input.getContent() as HTMLInputElement
+                if (input.value !== '') {
+                  chatController.createChat(input.value)
+                  input.value = ''
+                }
               }
-            }
             }
           },
           capture: false,
@@ -55,7 +55,6 @@ export default class LeftPanel extends Block {
     store.on(StoreEvents.Updated, () => {
       const chats = store.getState().chats
       if (chats != null) {
-        
         const children: Chat[] = []
         // @ts-expect-error
         chats.forEach((chat) => {
@@ -76,10 +75,10 @@ export default class LeftPanel extends Block {
           children.push(new Chat({
             attr: {
               class: 'chat',
-              //style: { backgroundColor: (chat.id === activeChat ? 'lightgrey' : 'white') }
+              // style: { backgroundColor: (chat.id === activeChat ? 'lightgrey' : 'white') }
             },
             id: chat.id,
-            name: name,
+            name,
             message_time: time,
             message_text: message,
             message_count: chat.unread_count,

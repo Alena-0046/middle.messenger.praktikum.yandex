@@ -26,12 +26,12 @@ export default class BottomPanel extends Block {
             if (e.target instanceof HTMLButtonElement) {
               e.preventDefault()
               console.log('BottomPanel - Button clicked')
-              if(!Array.isArray(this.children.input)){
-              const input = this.children.input.getContent() as HTMLInputElement
-              if (input.value !== '') {
-                messageController.sendMessage(input.value)
-                input.value = ''
-              }
+              if (!Array.isArray(this.children.input)) {
+                const input = this.children.input.getContent() as HTMLInputElement
+                if (input.value !== '') {
+                  messageController.sendMessage(input.value)
+                  input.value = ''
+                }
               }
             }
           },
