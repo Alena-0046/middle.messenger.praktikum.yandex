@@ -15,6 +15,7 @@
         "project": ["tsconfig.json"]
     },
     "rules": {
+        "indent": "off",
         "max-len": [1, 200],
         "require-jsdoc": 0,
         "space-before-function-paren": ["error", "always"],

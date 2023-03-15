@@ -21,7 +21,7 @@ export default class InputGroup extends Block {
       },
       nick: {
         text: 'Имя в чатах',
-        name: 'name',
+        name: 'display_name',
         type: 'text',
         span: 'от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание)',
       },
@@ -43,6 +43,12 @@ export default class InputGroup extends Block {
         type: 'tel',
         span: 'от 10 до 15 символов, состоит из цифр, может начинается с плюса',
       },
+      old_password: {
+        text: 'Старый пароль',
+        name: 'oldPassword',
+        type: 'password',
+        span: 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+      },
       password: {
         text: 'Пароль',
         name: 'password',
@@ -51,9 +57,9 @@ export default class InputGroup extends Block {
       },
       password_repeat: {
         text: 'Пароль (ещё раз)',
-        name: 'password',
+        name: 'newPassword',
         type: 'password',
-        span: 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+        span: 'пароли не совпали',
       },
     }
 
@@ -61,41 +67,74 @@ export default class InputGroup extends Block {
       attr: { class: 'input-group' },
       order: className,
       label: new Label({
-        attr: { class: 'signup-page__label' },
-        text: inputData[type].text,
+        attr: {
+          class: 'signup-page__label',
+
+          textContent: inputData[type].text,
+        },
       }),
       input: new Input({
         attr: {
+
           name: inputData[type].name,
+
           type: inputData[type].type,
         },
+        events: {
+          focus: {
+            handler: () => {
+              // Do not validate input on focus event
+              // Users won't see red labels after clicking on input
+
+              // if(e.target != null && e.target instanceof HTMLInputElement) {
+              //  InputGroup.validateInputGroup(e.target)
+              // }
+            },
+            capture: true,
+          },
+          blur: {
+            handler: (e: Event) => {
+              if (e.target != null) {
+                // @ts-expect-error
+                InputGroup.validateInputGroup(e.target)
+              }
+            },
+            capture: true,
+          },
+        },
       }),
-      span: new Span({ text: inputData[type].span }),
+
+      span: new Span({ attr: { textContent: inputData[type].span } }),
     }
 
     super('div', props)
   }
 
-  render (): string {
+  render (): DocumentFragment {
     this.children.span.hide()
-    return template(this.getPropsAndChildren())
+    return this.compile(template, this.props)
   }
 
-  static validate (): boolean {
+  static validate (): object | null {
+    let isValid = true
     const fields = {}
-    let result = true
     const inputs = document.querySelectorAll('input')
     inputs.forEach((input) => {
-      InputGroup.validateInputGroup(input)
+      if (!InputGroup.validateInputGroup(input)) {
+        console.log('Validate failed')
+        isValid = false
+      }
+
       fields[input.name] = input.value
     })
-    return result
+    return isValid ? fields : null
   }
-  static validateInputGroup(input: HTMLInputElement): boolean{
+
+  static validateInputGroup (input: HTMLInputElement): boolean {
     const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
 
     if (this.validateInput(input)) {
-      console.log('OK, ' + input.name + ': ' + input.value)
+      // console.log('OK, ' + input.name + ': ' + input.value)
       span.style.display = 'none'
       return true
     } else {
@@ -129,6 +168,7 @@ export default class InputGroup extends Block {
       case 'email':
         result = email.test(input.value)
         break
+      case 'oldPassword':
       case 'password':
         result = password.test(input.value)
         break

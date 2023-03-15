@@ -1,48 +1,66 @@
-import HomePage from './pages/home/home'
+// import HomePage from './pages/home/home'
 import LoginPage from './pages/login/login'
 import SignupPage from './pages/signup/signup'
 import ProfilePage from './pages/profile/profile'
 import UserPage from './pages/user/user'
-import ErrorPage from './pages/error/error'
-import type Block from './core/block'
+// import ErrorPage from './pages/error/error'
+import Router from './core/router'
+// import type Block from './core/block'
 
-export const enum PageIds {
-  Home = 'home',
+export const enum Pages {
+  Login = '/',
+  SignUp = '/sign-up',
+  Settings = '/settings',
+  Messenger = '/messenger',
+  /* Home = 'home',
   User = 'user',
   Profile = 'profile',
   Login = 'login',
-  Signup = 'signup',
+  Signup = 'signup',*/
 }
 
 export default class App {
-  private static readonly bodyContainer: HTMLElement = document.body
+  private static readonly router: Router
+
+  constructor () {
+    this.router = new Router('.app')
+    this.router.use(Pages.Login, LoginPage)
+      .use(Pages.SignUp, SignupPage)
+      .use(Pages.Settings, ProfilePage)
+      .use(Pages.Messenger, UserPage)
+  }
+
+  run (): void {
+    this.router.start()
+  }
+  /* private static readonly bodyContainer: HTMLElement = document.body
 
   static loadPage (pageId: string): void {
     let page: Block | null = null
     switch (pageId) {
       case PageIds.Home:
         console.log('Create Home Page')
-        page = new HomePage(pageId)
+        page = new HomePage()
         break
       case PageIds.User:
         console.log('Create User Page')
-        page = new UserPage(pageId)
+        page = new UserPage()
         break
       case PageIds.Profile:
         console.log('Create Profile Page')
-        page = new ProfilePage(pageId)
+        page = new ProfilePage()
         break
       case PageIds.Login:
         console.log('Create Login Page')
-        page = new LoginPage(pageId)
+        page = new LoginPage()
         break
       case PageIds.Signup:
         console.log('Create Signup Page')
-        page = new SignupPage(pageId)
+        page = new SignupPage()
         break
       default:
         console.log('Here should be error')
-        page = new ErrorPage(pageId)
+        page = new ErrorPage()
         break
     }
 
@@ -63,5 +81,5 @@ export default class App {
   run (): void {
     App.loadPage(PageIds.Home)
     this.enableRouteChange()
-  }
+  }*/
 }

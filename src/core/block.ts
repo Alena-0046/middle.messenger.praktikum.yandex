@@ -1,4 +1,5 @@
-import EventBus from './eventBus.ts'
+import { v4 as makeUUID } from 'uuid'
+import EventBus from './eventBus'
 
 enum EVENTS {
   INIT = 'init',
@@ -6,8 +7,9 @@ enum EVENTS {
   FLOW_CDU = 'flow:component-did-update',
   FLOW_RENDER = 'flow:render',
 }
-
+// @ts-expect-error
 export default abstract class Block<Props extends Record<string, any> = unknown> {
+  protected id: string
   protected _element: HTMLElement
   protected _meta: Record<string, unknown>
   protected props: Props
@@ -15,7 +17,9 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   protected eventBus: EventBus
 
   constructor (tag: string, all: Props) {
-    // this._element = document.createElement(tag)
+    this.eventBus = new EventBus()
+
+    this.id = makeUUID()
     this._meta = { tag, all }
 
     const tempProps = {}
@@ -23,30 +27,49 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     Object.entries(all).forEach(([key, value]) => {
       if (value instanceof Block ||
       (Array.isArray(value) && value.length > 0 && value[0] instanceof Block)) {
+        // @ts-expect-error
         tempChildren[key] = value
       } else {
+        // @ts-expect-error
         tempProps[key] = value
       }
     })
-
-    this.props = this._makePropsProxy(tempProps)
+    // @ts-expect-error
+    this.props = this._makePropsProxy({ ...tempProps, __id: this.id })
     this.children = tempChildren
 
-    this.eventBus = new EventBus()
     this.registerEvents()
     this.eventBus.emit(EVENTS.INIT)
   }
 
+  /* private _getChildrenAndProps(all: Props): object {
+    const props: Props = {}
+    const children: Record<string, Block | Block[]> = {}
+
+    Object.entries(all).forEach(([key, value]) => {
+      if (value instanceof Block ||
+      (Array.isArray(value) && value.length > 0 && value[0] instanceof Block)) {
+        children[key] = value
+      } else {
+        props[key] = value
+      }
+    })
+
+    return {props, children}
+  }*/
+
   registerEvents (): void {
     this.eventBus.on(EVENTS.INIT, this.init.bind(this))
-    this.eventBus.on(EVENTS.FLOW_CMD, this._componentDidMount.bind(this))
+    this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
     this.eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
     this.eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
   init (): void {
     const { tag } = this._meta
+    // @ts-expect-error
     this._element = document.createElement(tag)
+    // console.log('INIT - call render')
     this.eventBus.emit(EVENTS.FLOW_RENDER)
   }
 
@@ -58,54 +81,110 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   }
 
   dispatchComponentDidMount (): void {
-    this.eventBus.emit(EVENTS.FLOW_CMD)
+    this.eventBus.emit(EVENTS.FLOW_CDM)
   }
 
   _componentDidUpdate (oldProps: Props, newProps: Props): void {
     const needRender = this.componentDidUpdate(oldProps, newProps)
     if (needRender) {
-      _render()
+      // console.log('UPDATE - call render')
+      this.eventBus.emit(EVENTS.FLOW_RENDER)
+      // this._render()
     }
   }
 
   componentDidUpdate (oldProps: Props, newProps: Props): boolean {
+    if (oldProps === newProps) {
+      console.log('oldProps === newProps')
+    }
     return true
   }
 
   _render (): void {
     this._removeEvents()
-    this._element.innerHTML = this.render()
+    // this._element.replaceWith(this.render())
+    this._element.innerHTML = ''
+    this._element.append(this.render())
+    // this._element.innerHTML = this.render()
     this._addAttributes()
     this._addEvents()
+  }
+
+  protected compile (template: (props: Props) => string, props: Props): DocumentFragment {
+    // console.log('Compile')
+    const contentAndStubs = { ...props }
+
+    Object.entries(this.children).forEach(([name, child]) => {
+      // console.log('Block - compile() - sort children')
+      if (Array.isArray(child)) {
+        // console.log('Block - compile - isArray , name: ' + name)
+        let result: string = ''
+        for (let i = 0; i < child.length; i++) {
+          result += `<div data-id="${child[i].id}">${name}${i}</div>`
+        }
+        // @ts-expect-error
+        contentAndStubs[name] = result
+      } else {
+        // @ts-expect-error
+        contentAndStubs[name] = `<div data-id="${child.id}">${name}</div>`
+        // console.log('Block - compile() - name: ' + name + ', value: ' + contentAndStubs[name])
+      }
+    })
+
+    const html: string = template(contentAndStubs)
+
+    const temp = document.createElement('template')
+    temp.innerHTML = html
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        for (let i = 0; i < child.length; i++) {
+          const stub = temp.content.querySelector(`[data-id="${child[i].id}"]`)
+          if (stub != null) {
+            stub.replaceWith(child[i].getContent())
+          }
+        }
+      } else {
+        const stub = temp.content.querySelector(`[data-id="${child.id}"]`)
+        if (stub != null) {
+          stub.replaceWith(child.getContent())
+        }
+      }
+    })
+    return temp.content
   }
 
   private _addAttributes (): void {
     const { attr = {} } = this.props
     Object.entries(attr).forEach(([key, value]) => {
       if (key === 'class') {
-        this._element.classList.add(value)
+        this._element.classList.add(value as string)
       } else {
+        // @ts-expect-error
         this._element[key] = value
       }
     })
   }
 
-  render (): string {
-    const text = this.props.text
-    if (typeof text === 'string') {
-      return text
-    }
-    return ''
+  render (): DocumentFragment {
+    return new DocumentFragment()
   }
 
   private _makePropsProxy (props: Props): Props {
+    const self = this
     return new Proxy(props, {
       get (target: Props, prop: string): unknown {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
       set (target: Props, prop: string, value: unknown): boolean {
+        const oldTarget = { ...target }
+        // @ts-expect-error
         target[prop] = value
+        // console.log('_makePropsProxy - in set: key='+prop+', value='+value)
+        // console.log(target)
+        // this.eventBus.emit(EVENTS.FLOW_CDU)
+        self.eventBus.emit(EVENTS.FLOW_CDU, oldTarget, target)
         return true
       },
       deleteProperty (): boolean {
@@ -116,9 +195,11 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
 
   setProps = (nextProps: Props): void => {
     if (nextProps == null) {
+      // console.log('Block setProps - null')
       return
     }
     Object.assign(this.props, nextProps)
+    // console.log(nextProps)
   }
 
   get element (): HTMLElement {
@@ -129,11 +210,14 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const combined = { ...this.props }
     Object.entries(this.children).forEach(([key, value]) => {
       if (value instanceof Block) {
+        // @ts-expect-error
         combined[key] = value.element.outerHTML
       } else {// value is Block[]
+        // @ts-expect-error
         combined[key] = ''
         value.forEach((child) => {
-          combined[key] = (combined[key] as string) + (child.element.outerHTML as string)
+          // @ts-expect-error
+          combined[key] = (combined[key] as string) + (child.element.outerHTML)
         })
       }
     })
@@ -146,7 +230,10 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
   }
 
   show (): void {
-    this.getContent().style.display = 'block'
+    console.log('Block - show ')
+    console.log(this.getContent())
+    this.getContent().style.display = 'flex'
+    console.log(this.getContent())
   }
 
   hide (): void {
@@ -157,6 +244,7 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const { events = {} } = this.props
 
     Object.entries(events).forEach(([key, value]) => {
+      // @ts-expect-error
       this._element.addEventListener(key, value.handler, value.capture)
     })
     /* Object.keys(events).forEach((eventName) => {
@@ -168,15 +256,18 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
     const { events = {} } = this.props
 
     Object.entries(events).forEach(([key, value]) => {
+      // @ts-expect-error
       this._element.removeEventListener(key, value.handler)
     })
   }
 
-  static renderDOM (query: string, block: Block): Element {
+  static renderDOM (query: string, block: Block): Element | null {
     const root = document.querySelector(query)
 
-    root.append(block.getContent())
-    block.dispatchComponentDidMount()
+    if (root != null) {
+      root.append(block.getContent())
+      block.dispatchComponentDidMount()
+    }
 
     return root
   }

@@ -1,12 +1,54 @@
 import Block from '../../core/block'
 import Button from '../../components/button/button'
+import Input from '../../components/input/input'
 import InputGroup from '../../components/inputgroup/inputgroup'
+import Link from '../../components/link/link'
 import template from './profile.hbs'
+import authController from '../../controllers/authController'
+import userController from '../../controllers/userController'
+import store, { StoreEvents } from '../../core/store'
 
 export default class ProfilePage extends Block {
   constructor () {
     const props = {
       attr: { class: 'profile-page' },
+
+      link: new Link({
+        attr: {
+          class: 'circle',
+          textContent: '<-', // <i class='fa-solid fa-arrow-left'></i>
+        },
+        href: '/messenger',
+      }),
+
+      input: new Input({
+        attr: {
+          id: 'profile__avatar-input',
+          type: 'file',
+        },
+      }),
+
+      button: new Button({
+        attr: {
+          textContent: 'Изменить аватар',
+        },
+        events: {
+          click: {
+            handler: () => {
+              const input = document.getElementById('profile__avatar-input')
+              if (input != null && input.files.length > 0) {
+                const file = input.files[0]
+                const data = new FormData()
+                data.append('avatar', file)
+                userController.changeAvatar(data)
+                input.value = null
+              }
+            },
+            capture: false,
+          },
+        },
+      }),
+
       inputgroups: [
         new InputGroup('profile__input-group', 'email'),
         new InputGroup('profile__input-group', 'login'),
@@ -14,66 +56,100 @@ export default class ProfilePage extends Block {
         new InputGroup('profile__input-group', 'nick'),
         new InputGroup('profile__input-group', 'second_name'),
         new InputGroup('profile__input-group', 'phone'),
+        new InputGroup('profile__input-group', 'old_password'),
         new InputGroup('profile__input-group', 'password'),
         new InputGroup('profile__input-group', 'password_repeat'),
       ],
       buttons: [
-        /* new Button({
-          attr: { class: 'save_button' },
-          text: 'Сохранить',
-        }),*/
         new Button({
-          attr: { class: 'buttons__change-data-button' },
-          text: 'Изменить данные',
-        }), /*
-        new Button({
-          attr: { class: 'buttons__change-password' },
-          text: 'Изменить пароль',
+          attr: {
+            class: 'buttons__change-data-button',
+            textContent: 'Изменить данные',
+          },
+          events: {
+            click: {
+              handler: () => {
+                console.log('Profile - ChangeData button clicked')
+                let isValid = true
+                const fields = {}
+                const inputs = document.querySelectorAll('input')
+                inputs.forEach((input) => {
+                  if(input.type !== 'file' && input.type !== 'password') {
+                    if(InputGroup.validateInputGroup(input)) {
+                      fields[input.name] = input.value
+                    } else {
+                      isValid = false
+                    }
+                  }
+                })
+                if(isValid) {
+                  userController.changeProfile(fields)
+                }
+              },
+              capture: false,
+            },
+          },
         }),
         new Button({
-          attr: { class: 'buttons__exit-button' },
-          text: 'Выйти',
-        }),*/
+          attr: {
+            class: 'buttons__change-password',
+            textContent: 'Изменить пароль',
+          },
+          events: {
+            click: {
+              handler: () => {
+                const oldPassword = document.getElementsByName('oldPassword')[0]
+                const newPassword = document.getElementsByName('password')[0]
+                const repeatPassword = document.getElementsByName('newPassword')[0].value
+
+                if(InputGroup.validateInputGroup(oldPassword) && InputGroup.validateInputGroup(newPassword)) {
+                  if(oldPassword.value === newPassword.value) {
+                    console.log('Profile - change password - old === new')
+                  } else if (newPassword.value !== repeatPassword) {
+                    console.log('Profile - change password - password !== repeatPassword')
+                  } else {
+                    userController.changePassword({
+                      oldPassword: oldPassword.value,
+                      newPassword: newPassword.value
+                    })
+                  }
+                }
+              },
+              capture: false
+            }
+          }
+        }),
+        new Button({
+          attr: {
+            class: 'buttons__exit-button',
+            textContent: 'Выйти',
+          },
+          events: {
+            click: {
+              handler: () => {
+                console.log('Profile - Exit clicked')
+                authController.logout()
+              },
+              capture: false,
+            },
+          },
+        }),
       ],
     }
 
-    props.events = {
-      click: {
-        handler: (e) => {
-          if (e.target != null && e.target instanceof HTMLButtonElement) {
-            InputGroup.validate()
-          }
-          console.log('Profile - click event')
-        },
-        capture: false,
-      },
-      focus: {
-        handler: (e) => {
-          console.log('Profile - focus event')
-          // Do not validate input on focus event
-          // Users won't see red labels after clicking on input
-          
-          //if(e.target != null && e.target instanceof HTMLInputElement) {
-          //  InputGroup.validateInputGroup(e.target)
-          //}
-        },
-        capture: true,
-      },
-      blur: {
-        handler: (e) => {
-          console.log('Profile - blur event')
-          if(e.target != null && e.target instanceof HTMLInputElement) {
-            InputGroup.validateInputGroup(e.target)
-          }
-        },
-        capture: true,
-      },
-    }
-
     super('main', props)
+
+    authController.getUser()
+
+    store.on(StoreEvents.Updated, () => {
+      const user = store.getState().user
+      if (user != null) {
+        this.setProps({ ava: user.avatar })
+      }
+    })
   }
 
-  render (): string {
-    return template(this.getPropsAndChildren())
+  render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }
