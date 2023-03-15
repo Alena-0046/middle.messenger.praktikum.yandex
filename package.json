@@ -63,7 +63,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run stylelint && npm run stylelint"
+      "pre-commit": "npm run stylelint && npm run eslint"
     }
   },
   "targets": {
