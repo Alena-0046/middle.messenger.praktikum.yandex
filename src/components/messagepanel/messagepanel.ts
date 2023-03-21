@@ -15,6 +15,7 @@ export default class MessagePanel extends Block {
       const messages = store.getState().messages
       if (messages != null) {
         const children: Message[] = []
+        // @ts-expect-error
         messages.forEach((message) => {
           // console.log(message) // id, user_id, chat, type, time, content, is_read, file
           children.push(new Message({

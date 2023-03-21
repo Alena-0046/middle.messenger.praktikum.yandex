@@ -1,8 +1,11 @@
-import BaseAPI from './baseAPI'
+import HTTPTransport from './HTTPTransport'
 
-class ChatAPI extends BaseAPI {
+class ChatAPI {
+  public static readonly url: string = 'https://ya-praktikum.tech/api/v2/chats'
+  private readonly http: HTTPTransport
+
   constructor () {
-    super('https://ya-praktikum.tech/api/v2/chats')
+    this.http = new HTTPTransport(ChatAPI.url)
   }
 
   async getChats (/* offset: number = 0, limit: number = 10, titleToFilter: string = ''*/): Promise<XMLHttpRequest> {
@@ -29,12 +32,10 @@ class ChatAPI extends BaseAPI {
     return await this.http.post(`/token/${chatId}`)
   }
 
-  // @ts-expect-error
   async create (title: string): Promise<XMLHttpRequest> {
     return await this.http.post('/', { data: { title }, headers: { 'Content-Type': 'application/json' } })
   }
 
-  // @ts-expect-error
   async delete (id: number): Promise<XMLHttpRequest> {
     return await this.http.delete('/', { data: { chatId: id }, headers: { 'Content-Type': 'application/json' } })
   }

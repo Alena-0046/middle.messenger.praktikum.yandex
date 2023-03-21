@@ -69,15 +69,15 @@ export default class InputGroup extends Block {
       label: new Label({
         attr: {
           class: 'signup-page__label',
-
+          // @ts-expect-error
           textContent: inputData[type].text,
         },
       }),
       input: new Input({
         attr: {
-
+          // @ts-expect-error
           name: inputData[type].name,
-
+          // @ts-expect-error
           type: inputData[type].type,
         },
         events: {
@@ -103,7 +103,7 @@ export default class InputGroup extends Block {
           },
         },
       }),
-
+      // @ts-expect-error
       span: new Span({ attr: { textContent: inputData[type].span } }),
     }
 
@@ -111,7 +111,9 @@ export default class InputGroup extends Block {
   }
 
   render (): DocumentFragment {
-    this.children.span.hide()
+    if (!Array.isArray(this.children.span)) {
+      this.children.span.hide()
+    }
     return this.compile(template, this.props)
   }
 
@@ -124,14 +126,14 @@ export default class InputGroup extends Block {
         console.log('Validate failed')
         isValid = false
       }
-
+      // @ts-expect-error
       fields[input.name] = input.value
     })
     return isValid ? fields : null
   }
 
   static validateInputGroup (input: HTMLInputElement): boolean {
-    const span = input.parentNode.parentNode.querySelector('span') as HTMLSpanElement
+    const span = input.parentNode!.parentNode!.querySelector('span') as HTMLSpanElement
 
     if (this.validateInput(input)) {
       // console.log('OK, ' + input.name + ': ' + input.value)

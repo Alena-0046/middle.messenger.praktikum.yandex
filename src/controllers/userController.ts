@@ -1,4 +1,4 @@
-import userAPI, {ChangeProfileData, ChangePasswordData} from '../api/userAPI'
+import userAPI, { type ChangeProfileData, type ChangePasswordData } from '../api/userAPI'
 import store from '../core/store'
 
 class UserController {
@@ -14,10 +14,10 @@ class UserController {
       })
   }
 
-  public changePassword(data: ChangePasswordData) {
+  public changePassword (data: ChangePasswordData) {
     console.log('UserController - change password')
     userAPI.changePassword(data)
-      .then((xhr) => {
+      .then(() => {
         console.log('OK')
       })
       .catch((error) => {
@@ -25,10 +25,10 @@ class UserController {
       })
   }
 
-  public changeProfile(data: ChangeProfileData) {
+  public changeProfile (data: ChangeProfileData) {
     console.log('UserController - change profile')
     userAPI.changeProfile(data)
-      .then((xhr) => {
+      .then(() => {
         console.log('OK')
       })
       .catch((error) => {

@@ -118,7 +118,7 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
       // console.log('Block - compile() - sort children')
       if (Array.isArray(child)) {
         // console.log('Block - compile - isArray , name: ' + name)
-        let result: string = ''
+        let result = ''
         for (let i = 0; i < child.length; i++) {
           result += `<div data-id="${child[i].id}">${name}${i}</div>`
         }
@@ -231,12 +231,13 @@ export default abstract class Block<Props extends Record<string, any> = unknown>
 
   show (): void {
     console.log('Block - show ')
-    console.log(this.getContent())
+    // console.log(this.getContent())
     this.getContent().style.display = 'flex'
-    console.log(this.getContent())
+    // console.log(this.getContent())
   }
 
   hide (): void {
+    console.log('BLOCK -_ HIDE')
     this.getContent().style.display = 'none'
   }
 

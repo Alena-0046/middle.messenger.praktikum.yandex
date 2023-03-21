@@ -8,8 +8,10 @@ export default class Chat extends Block {
       ...props,
       events: {
         click: {
-          handler: (e) => {
+          handler: () => {
+            // @ts-expect-error
             if (this.props.id != null && this.props.id !== store.getState().activeChat) {
+              // @ts-expect-error
               store.set('activeChat', this.props.id)
             }
           },

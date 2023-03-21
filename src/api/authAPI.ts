@@ -1,4 +1,4 @@
-import BaseAPI from './baseAPI'
+import HTTPTransport from './HTTPTransport'
 
 export type SigninData = {
   login: string
@@ -14,9 +14,12 @@ export type SignupData = {
   phone: string
 }
 
-class AuthAPI extends BaseAPI {
+class AuthAPI {
+  public static readonly url: string = 'https://ya-praktikum.tech/api/v2/auth'
+  private readonly http: HTTPTransport
+
   constructor () {
-    super('https://ya-praktikum.tech/api/v2/auth')
+    this.http = new HTTPTransport(AuthAPI.url)
   }
 
   async signup (data: SignupData): Promise<XMLHttpRequest> {

@@ -11,7 +11,7 @@ export default class Route {
     this._blockClass = view
     this._block = null
     this._props = props
-    // console.log(this._props)
+    console.log(this._props)
   }
 
   navigate (pathname: string): void {

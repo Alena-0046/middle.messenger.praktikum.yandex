@@ -1,4 +1,4 @@
-import BaseAPI from './baseAPI'
+import HTTPTransport from './HTTPTransport'
 
 export type ChangePasswordData = {
   oldPassword: string
@@ -14,9 +14,12 @@ export type ChangeProfileData = {
   phone: string
 }
 
-class UserAPI extends BaseAPI {
+class UserAPI {
+  public static readonly url: string = 'https://ya-praktikum.tech/api/v2/user'
+  private readonly http: HTTPTransport
+
   constructor () {
-    super('https://ya-praktikum.tech/api/v2/user')
+    this.http = new HTTPTransport(UserAPI.url)
   }
 
   async changeAvatar (data: FormData): Promise<XMLHttpRequest> {
